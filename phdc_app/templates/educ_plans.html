@@ -1,0 +1,133 @@
+{% extends 'students.html' %}
+
+{% block base-title %} PHDCENTRE: Навчальний план {% endblock base-title %}
+
+{% block homea-reset-btn %}
+<a href="{% url 'phdc_app:educ_plans' id=id %}">
+	<i class="ri-restart-line"></i>
+</a>
+{% endblock homea-reset-btn %}
+
+{% block homea-search-field-input %}
+<input class="form-control" type="text" name="educ_plans_q" placeholder="Пошук"
+       hx-get="{% url 'phdc_app:educ_plan_list' id=id %}"
+       hx-trigger="keyup changed delay:500ms"
+       hx-target="#educ-plan-list">
+{% endblock homea-search-field-input %}
+
+{% block homea-section-title %} 
+<i class="ri-bill-line"></i>&nbsp;Навчальний план аспіранта
+<p style="font-size: 2.5rem; text-align: center; position: relative;">
+    {{ student.lastname }} {{ student.firstname }} {{ student.middlename }}
+</p> 
+{% endblock homea-section-title %}
+
+{% block s-table-add-btn %}
+<div class="table-add-btn" id="sg-add-btn">
+  <button hx-get="{% url 'phdc_app:add_educ_plan' id=id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary main-btn add-btn">
+    <i class="ri-sticky-note-add-line"></i> Створити план
+  </button>
+</div>
+{% endblock s-table-add-btn %}
+
+{% block filters %}
+<form method="GET" class="mt-5 mb-2" hx-get="{% url 'phdc_app:educ_plan_list' id=id %}" hx-target="#educ-plan-list" hx-trigger="change from:form">
+	{% csrf_token %}
+	<div class="s-table-filters">
+		<p><i class="ri-filter-line"></i>Фільтри</p>
+		<div class="btn-group wd-100" role="group" aria-label="Basic radio toggle button group" style="width: 70%;">
+			<div class="s-table-filters-educyear">
+				<input type="radio" class="btn-check" value="1" name="educyear" id="btnradio1" autocomplete="off" {% if selected_educyear == "1" %}checked{% endif %}>
+				<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio1">Перший рік</label>
+
+				<input type="radio" class="btn-check" value="2" name="educyear" id="btnradio2" autocomplete="off" {% if selected_educyear == "2" %}checked{% endif %}>
+				<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio2">Другий рік</label>
+
+				<input type="radio" class="btn-check" value="3" name="educyear" id="btnradio3" autocomplete="off" {% if selected_educyear == "3" %}checked{% endif %}>
+				<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio3">Третій рік</label>
+
+				<input type="radio" class="btn-check" value="4" name="educyear" id="btnradio4" autocomplete="off" {% if selected_educyear == "4" %}checked{% endif %}>
+				<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio4">Четвертий рік</label>
+			</div>
+
+			<div class="vr vr-status"></div>
+
+			<div class="s-table-filters-educsemester" style="position: relative; left: 1rem;">
+				<input type="radio" class="btn-check" value="1" name="educsemester" id="btnradio5" autocomplete="off" {% if selected_educsemester == "1" %}checked{% endif %}>
+				<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio5">Перший семестр</label>
+
+				<input type="radio" class="btn-check" value="2" name="educsemester" id="btnradio6" autocomplete="off" {% if selected_educsemester == "2" %}checked{% endif %}>
+				<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio6">Другий семестр</label>
+
+				<input type="radio" class="btn-check" value="3" name="educsemester" id="btnradio7" autocomplete="off" {% if selected_educsemester == "3" %}checked{% endif %}>
+				<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio7">Третій семестр</label>
+
+				<input type="radio" class="btn-check" value="4" name="educsemester" id="btnradio8" autocomplete="off" {% if selected_educsemester == "4" %}checked{% endif %}>
+				<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio8">Четвертий семестр</label>
+			</div>
+		</div>
+		<div class="btn-group wd-100" role="group" aria-label="Basic radio toggle button group" style="position: relative; top: 5px;">
+				<div class="s-table-filters-eductype">
+					<input type="radio" class="btn-check" value="Нормативні" name="eductype" id="btnradio9" autocomplete="off" {% if selected_eductype == "Нормативні" %}checked{% endif %}>
+					<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio9">Нормативні</label>
+	
+					<input type="radio" class="btn-check" value="Вибіркові" name="eductype" id="btnradio10" autocomplete="off" {% if selected_eductype == "Вибіркові" %}checked{% endif %}>
+					<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio10">Вибіркові</label>
+				</div>
+	
+				<div class="vr vr-status"></div>
+	
+				<div class="s-table-filters-educatform" style="position: relative; left: 1rem;">
+					<input type="radio" class="btn-check" value="Іспит" name="educatform" id="btnradio11" autocomplete="off" {% if selected_educatform == "Іспит" %}checked{% endif %}>
+					<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio11">Іспит</label>
+	
+					<input type="radio" class="btn-check" value="Залік" name="educatform" id="btnradio12" autocomplete="off" {% if selected_educatform == "Залік" %}checked{% endif %}>
+					<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio12">Залік</label>
+	
+					<input type="radio" class="btn-check" value="Екзамен" name="educatform" id="btnradio13" autocomplete="off" {% if selected_educatform == "Екзамен" %}checked{% endif %}>
+					<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio13">Екзамен</label>
+				</div>
+
+				<div class="vr vr-status" style="position: relative; left: 1.5rem;"></div>
+
+				<div class="s-table-filters-educlocation" style="position: relative; left: 2rem;">
+					<input type="radio" class="btn-check" value="Аспірант" name="educlocation" id="btnradio14" autocomplete="off" {% if selected_educlocation == "Аспірант" %}checked{% endif %}>
+					<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio14">Аспірант</label>
+	
+					<input type="radio" class="btn-check" value="Відділ аспірантури" name="educlocation" id="btnradio15" autocomplete="off" {% if selected_educlocation == "Відділ аспірантури" %}checked{% endif %}>
+					<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio15">Відділ аспірантури</label>
+	
+					<input type="radio" class="btn-check" value="Приймальня" name="educlocation" id="btnradio16" autocomplete="off" {% if selected_educlocation == "Приймальня" %}checked{% endif %}>
+					<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio16">Приймальня</label>
+	
+					<input type="radio" class="btn-check" value="31 корпус" name="educlocation" id="btnradio17" autocomplete="off" {% if selected_educlocation == "31 корпус" %}checked{% endif %}>
+					<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio17">31 корпус</label>
+				</div>
+			</div>
+	</div>
+</form>
+{% endblock filters %}
+
+{% block s-table %}
+<table id="sg-table">
+{% endblock s-table %}
+
+{% block s-table-title-col %}
+<tr>
+	<th>Дисципліна</th>
+	<th>Курс</th>
+	<th>Семестр</th>
+	<th>Тип</th>
+	<th>Кредити</th>
+	<th>Форма атестації</th>
+	<th>Розташування</th>
+	<th colspan="2">Дія</th>
+</tr>
+{% endblock s-table-title-col %}
+
+{% block s-table-data-col %}
+<tbody id="educ-plan-list" hx-trigger="load, educPlanUpdate from:body"
+       hx-get="{% url 'phdc_app:educ_plan_list' id=id %}" hx-target="this">
+    {% include 'educ_plan_list.html' %}
+</tbody>
+{% endblock s-table-data-col %}

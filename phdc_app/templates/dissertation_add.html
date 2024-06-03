@@ -1,0 +1,45 @@
+{% extends 'dissertation.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block base-title %} PHDCENTRE: Створення дисертації {% endblock base-title %}
+
+{% block homea-cards-list-content %}
+<div class="container mt-3" style="width: 95%; font-size: 14px; position: relative; top: -30px;">
+    <form method="POST" enctype="multipart/form-data" class="card p-3 mt-5" autocomplete="off" novalidate id="diss-creation-form" style="border-radius: 30px; border-color: #e9ebee;">  <!-- Add enctype attribute -->
+        {% csrf_token %}
+        <div class="card p-3 border-dark text-center" style="font-size: 18px; font-weight: 400;">
+            {% block diss-add-title %}
+            <span><i class="ri-sticky-note-add-line" id="form-section-title-i" style="color: #92e3a9;"></i>Створення дисертації</span>
+            {% endblock diss-add-title %}  
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-3">{{ form.name|as_crispy_field }}</div>
+            <div class="col-2">{{ form.state|as_crispy_field }}</div>
+            <div class="col-2">{{ form.council_cypher|as_crispy_field }}</div>
+            <div class="col-2">{{ form.defense_date|as_crispy_field }}</div>
+            <div class="col-3">{{ form.defense_link|as_crispy_field }}</div>
+        </div>
+        <div class="row">
+            <div class="col-4">{{ form.reviewer_1|as_crispy_field }}</div>
+            <div class="col-4">{{ form.reviewer_2|as_crispy_field }}</div>
+            <div class="col-4">
+                {{ form.file|as_crispy_field }}
+                <label for="id_file" style="position: relative; top: -15px; display: inline-block; cursor: pointer;"></label>
+            </div>
+        </div>
+        <div class="row">{{ form.abstract|as_crispy_field }}</div>
+        <br>
+        <hr>
+        <button type="submit" class="btn btn-dark mt-3" id="form-main-btn">Зберегти</button>  
+    </form>
+</div>
+
+<script>
+    document.getElementById('id_file').addEventListener('change', function() {
+        var fileName = this.files[0].name;
+        document.getElementById('file-selected').textContent = fileName ? fileName : 'Файл не вибрано';
+    });
+</script>
+{% endblock homea-cards-list-content %}

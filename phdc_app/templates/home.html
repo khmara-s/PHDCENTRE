@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+
+{% block base-navbar %}{% endblock base-navbar %}
+
+{% block base-content %} 
+<div class="container-fluid" id="home-main-container">
+	<div class="home-waveimg">
+		<img src="/static/images/bgwavemd2.png" alt="">
+	</div>
+	
+	<nav class="home-navbar">
+		<ul></ul>
+		<span class="phdclogo">
+			<a href="#">
+				<i class="ri-graduation-cap-line" style="color: #92e3a9; font-size: 30px;"></i>&nbsp;PHDCENTRE
+			</a>
+		</span>
+	</nav>
+
+	<div class="home-content-left">
+		<div class="home-laptopimg">
+			<img src="/static/images/laptopimg1.png" alt="">
+		</div>
+
+		<div class="home-cleft-text">
+			<h1>PHDCENTRE</h1>
+			<p>Електронне сховище даних аспірантів.<br>
+				Комфортне та зручне середовище як для самих здобувачів ступеня, так і для відділу аспірантури
+				вищого навчального закладу.
+			</p>
+		</div>
+	</div>
+	
+	<div class="home-content-right">
+		<div class="home-cright-box">
+			<div class="home-cright-icon">
+				<a href="{% url 'phdc_app:login_page' %}" id="base_icon_links">
+					<img src="/static/images/lockuser.png" alt="">
+				</a>
+			</div>
+			<div class="home-cright-inner-box">
+				<h3>Особистий кабінет</h3>
+				<p>Здійсність вхід в систему<br>
+					та перейдіть в особистий кабінет.
+				</p>
+			</div>
+		</div>
+		
+		<div class="home-cright-box">
+			<div class="home-cright-icon">
+				<a href="{% url 'phdc_app:register' %}" id="base_icon_links">
+					<img src="/static/images/adduser.png" alt="">
+				</a>
+			</div>
+			<div class="home-cright-inner-box">
+				<h3>Реєстрація</h3>
+				{% if reg.is_locked == True %}
+				<p style="color: #ff7a72 !important;">Реєстрація тимчасово недоступна!</p>
+				{% else %}
+				<p>Станьте новим учасником системи.</p>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<p style="font-size: 10px; position: relative; top: 3rem; text-decoration: underline;">Designed by&nbsp;<a href="www.freepik.com" style="text-decoration: none; color:black">Freepik</a></p>
+</div>
+{% endblock base-content %}

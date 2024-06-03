@@ -1,0 +1,91 @@
+{% extends 'deadlines.html' %}
+
+
+{% block base-title %} PHDCENTRE: Список перевірки {% endblock base-title %}
+
+{% block homea-section-title %} 
+<i class="ri-user-search-line"></i>&nbsp;Список перевірки 
+{% endblock homea-section-title %}
+
+{% block add-deadl %}{% endblock add-deadl %}
+
+{% block deadl-cards %}
+<div class="blist-card">
+	<div class="blist-card-img">
+		<div class="blist-card-imgbox">
+			<img src="/static/images/blacklistother.png">
+		</div>
+	</div>
+	<div class="blist-card-content">
+		<h3>Інше</h3>
+		<a href="{% url 'phdc_app:blacklists_cats' 'Інше' %}" class="btn btn-outline-secondary" id="sp-btn-tchr-view">
+			<i class="ri-eye-line"></i> Оглянути
+		</a>
+	</div>
+</div>
+<div class="blist-card">
+	<div class="blist-card-img">
+		<div class="blist-card-imgbox">
+			<img src="/static/images/diss_img.png">
+		</div>
+	</div>
+	<div class="blist-card-content">
+		<h3>Дисертація</h3>
+		<a href="{% url 'phdc_app:blacklists_cats' 'Дисертація' %}" class="btn btn-outline-secondary" id="sp-btn-tchr-view">
+			<i class="ri-eye-line"></i> Оглянути
+		</a>
+	</div>
+</div>
+<div class="blist-card">
+	<div class="blist-card-img">
+		<div class="blist-card-imgbox">
+			<img src="/static/images/pub_img.png"> 
+		</div>
+	</div>
+	<div class="blist-card-content">
+		<h3>Публікації</h3>
+		<a href="{% url 'phdc_app:blacklists_cats' 'Публікації' %}" class="btn btn-outline-secondary" id="sp-btn-tchr-view">
+			<i class="ri-eye-line"></i> Оглянути
+		</a>
+	</div>
+</div>
+<div class="blist-card">
+	<div class="blist-card-img">
+		<div class="blist-card-imgbox">
+			<img src="/static/images/blacklistresearchplan.png">
+		</div>
+	</div>
+	<div class="blist-card-content">
+		<h3>План наукової роботи</h3>
+		<a href="{% url 'phdc_app:blacklists_cats' 'План наукової роботи' %}" class="btn btn-outline-secondary" id="sp-btn-tchr-view">
+			<i class="ri-eye-line"></i> Оглянути
+		</a>
+	</div>
+</div>
+<div class="blist-card">
+	<div class="blist-card-img">
+		<div class="blist-card-imgbox">
+			<img src="/static/images/blacklisteducplan.png"> 
+		</div>
+	</div>
+	<div class="blist-card-content">
+		<h3>Навчальний план</h3>
+		<a href="{% url 'phdc_app:blacklists_cats' 'Навчальний план' %}" class="btn btn-outline-secondary" id="sp-btn-tchr-view">
+			<i class="ri-eye-line"></i> Оглянути
+		</a>
+	</div>
+</div>
+<div class="blist-card">
+	<div class="blist-card-img">
+		<div class="blist-card-imgbox">
+			<img src="/static/images/deadline.png"> 
+		</div>
+	</div>
+	<div class="blist-card-content">
+		<h3>Дедлайни</h3>
+		<a href="{% url 'phdc_app:blacklists_cats' 'Дедлайни' %}" class="btn btn-outline-secondary" id="sp-btn-tchr-view">
+			<i class="ri-eye-line"></i> Оглянути
+		</a>
+	</div>
+</div>
+{% endblock deadl-cards %}

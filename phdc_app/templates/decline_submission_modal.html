@@ -1,0 +1,17 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="ri-close-line"></i>&nbsp;Відхилення здачі дедлайну</h5>
+      </div>
+      <div class="modal-body">
+        <p class="text-center" style="font-size: 1.2rem; font-weight: 400; color:#FF6961;">Відхилити здачу дедлайну?</p>
+      </div>
+      <div class="modal-footer">
+        <form method="post" hx-post="{% url 'phdc_app:decline_submission' id=id deadline_id=deadline_id %}" hx-trigger="click" hx-swap="none">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger" id="modal-logout-btn">Відхилити</button>
+        </form>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-close-btn">Скасувати</button>
+      </div>
+    </div>
+  </div>

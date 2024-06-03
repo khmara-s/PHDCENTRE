@@ -1,0 +1,50 @@
+{% extends 'students.html' %}
+
+
+{% block base-title %} PHDCENTRE: Автори публікації {% endblock base-title %}
+
+{% block homea-reset-btn %}
+<a href="{% url 'phdc_app:authors'  publication.id %}">
+	<i class="ri-restart-line"></i>
+</a>
+{% endblock homea-reset-btn %}
+
+{% block homea-search-field-input %}
+<input class="form-control" type="text" name="authors_q" placeholder="Пошук"
+       hx-get="{% url 'phdc_app:author_list' id=publication.id %}"
+       hx-trigger="keyup changed delay:500ms"
+       hx-target="#author-list">
+{% endblock homea-search-field-input %}
+
+{% block homea-title %} authors-title {% endblock homea-title %}
+{% block homea-section-title %} 
+<i class="ri-team-line"></i>&nbsp;Автори публікації<p style="font-size: 2.5rem; text-align: center; position: relative; right: 5.5rem;">"{{ publication.name }}"</p> 
+{% endblock homea-section-title %}
+
+{% block s-table-add-btn %}
+<div class="table-add-btn" style="position: relative; top: -1.5% !important; left: 5%;">
+  <button hx-get="{% url 'phdc_app:add_authors' publication.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary main-btn add-btn">
+    <i class="ri-user-add-line"></i>  Додати авторів
+  </button>
+</div>
+{% endblock s-table-add-btn %}
+
+{% block filters %}{% endblock filters %}
+
+{% block s-table %}
+<table id="sg-table" style="position: relative; top: 0;">
+{% endblock s-table %}
+
+{% block s-table-title-col %} 
+<tr>
+	<th>Аспіранти</th>
+	<th>Викладачі</th>
+	<th colspan="2">Дія</th>
+</tr>
+{% endblock s-table-title-col %}
+
+{% block s-table-data-col %}
+<tbody id="author-list" hx-trigger="load, authorsUpdate from:body" hx-get="{% url 'phdc_app:author_list' publication.id %}" hx-target="this">
+    {% include 'author_list.html' %}
+</tbody>
+{% endblock s-table-data-col %}

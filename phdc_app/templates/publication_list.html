@@ -1,0 +1,30 @@
+{% for data in publications %}
+<tr>
+  <td>{{ data.name }}</td>
+  <td>{{ data.type_id }}</td>
+  <td>{{ data.edition_id }}</td>
+  {% if data.doi == ' ' %}
+  <td>DOI відсутнє</td>
+  {% else %}
+  <td>{{ data.doi }}</td>
+  {% endif %}
+  {% if data.is_suitable == 'Очікується перевірка' %}
+  <td><i class="ri-time-line" style="color: #FFB480;"></i></td>
+  {% elif data.is_suitable == 'Не зарахована' %}
+  <td><i class="ri-close-circle-line" style="color: #ff7a72;"></i></td>
+  {% else %}
+  <td><i class="ri-checkbox-circle-line" style="color: #92e3a9;"></i></td>
+  {% endif %}
+  <td>{{ data.coef }}</td>
+  <td class="s-table-btns">
+    <a href="{% url 'phdc_app:publication' id=data.id %}"  class="btn btn-outline-secondary btn-sm text-light" id="table-btn">
+      <i class="ri-eye-line"></i>
+    </a>
+    <button hx-get="{% url 'phdc_app:delete_publication' publication_id=data.id  %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-delete-btn">
+      <i class="ri-delete-bin-line"></i>
+    </button>
+  </td>
+</tr>
+{% empty %}
+<td colspan="6" class="s-table-empty-rcrd"><strong>Записи відсутні</strong></td>
+{% endfor %}

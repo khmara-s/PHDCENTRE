@@ -1,0 +1,33 @@
+{% for data in study_groups %}
+<tr>
+	<td>{{ data.name }}</td>
+	<td>{{ data.department_id.abbreviation }}</td>
+	{% if data.study_type == 'Денна' %}
+	<td><i class="ri-sun-line" style="color: #92e3a9;"></i>&nbsp;{{ data.study_type }}</td>
+	{% elif data.study_type == 'Вечірня' %}
+	<td><i class="ri-moon-line" style="color: #92e3a9;"></i>&nbsp;{{ data.study_type }}</td>
+	{% elif data.study_type == 'Дистанційна' %}
+	<td><i class="ri-macbook-line" style="color: #92e3a9;"></i>&nbsp;{{ data.study_type }}</td>
+	{% elif data.study_type == 'Очна' %}
+	<td><i class="ri-building-line" style="color: #92e3a9;"></i>&nbsp;{{ data.study_type }}</td>
+	{% elif data.study_type == 'Заочна' %}
+	<td><i class="ri-home-4-line" style="color: #92e3a9;"></i>&nbsp;{{ data.study_type }}</td>
+	{% endif %}
+	<td>{{ data.course }}</td>
+	<td>{{ data.date_educ_start }}</td>
+	<td>{{ data.date_educ_end }}</td>
+	<td class="s-table-btns">
+		<a href="{% url 'phdc_app:study_group' data.id %}" class="btn btn-outline-secondary btn-sm text-light" id="table-btn">
+			<i class="ri-eye-line"></i>
+		</a>
+		<button hx-get="{% url 'phdc_app:edit_study_group' data.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-btn">
+			<i class="ri-pencil-line"></i>
+		</button>
+		<button hx-get="{% url 'phdc_app:delete_study_group' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-delete-btn">
+            <i class="ri-delete-bin-line"></i>
+        </button>
+	</td>
+	{% empty %}
+	<td colspan="6" class="s-table-empty-rcrd"><strong>Записи відсутні</strong></td>
+</tr>
+{% endfor %}

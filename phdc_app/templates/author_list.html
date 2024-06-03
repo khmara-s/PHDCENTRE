@@ -1,0 +1,23 @@
+{% for author in authors %}
+<tr>
+    <td>
+        {% if author.student_id %}
+        {{ author.student_id.lastname }} {{ author.student_id.firstname }} {{ author.student_id.middlename }}
+        {% else %}
+        Автор відсутній
+        {% endif %}
+    </td>
+    <td>
+        {% if author.teacher_id %}
+        {{ author.teacher_id.lastname }} {{ author.teacher_id.firstname }} {{ author.teacher_id.middlename }}
+        {% else %}
+        Автор відсутній
+        {% endif %}
+    </td>
+    <td class="s-table-btns">
+		<button hx-get="{% url 'phdc_app:delete_author' id=author.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-delete-btn">
+			<i class="ri-delete-bin-line"></i>
+		</button>
+    </td>
+</tr>
+{% endfor %}

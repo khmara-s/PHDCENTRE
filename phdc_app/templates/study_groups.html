@@ -1,0 +1,115 @@
+{% extends 'students.html' %}
+
+{% block base-title %} PHDCENTRE: Навчальні групи {% endblock base-title %}
+
+{% block homea-reset-btn %}
+<a href="{% url 'phdc_app:study_groups' %}">
+	<i class="ri-restart-line"></i>
+</a>
+{% endblock homea-reset-btn %}
+
+{% block homea-search-field-input %}
+<input class="form-control" type="text" name="study_groups_q" placeholder="Пошук" 
+	   hx-get="{% url 'phdc_app:study_group_list' %}" 
+	   hx-trigger="keyup changed delay:500ms" 
+	   hx-target="#study_group-list">
+{% endblock homea-search-field-input %}
+
+{% block homea-section-title %} 
+<i class="ri-group-line"></i>&nbsp;Навчальні групи 
+{% endblock homea-section-title %}
+
+{% block s-table-add-btn %}
+<div class="table-add-btn" id="sg-add-btn">
+	<button hx-get="{% url 'phdc_app:add_study_group' %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary main-btn add-btn">
+		<i class="ri-add-circle-line"></i> Створити групу
+	</button>
+</div>
+{% endblock s-table-add-btn %}
+
+{% block filters %}
+<form id="filter-form" hx-get="{% url 'phdc_app:study_group_list' %}" hx-target="#study_group-list" hx-trigger="change from:input[name='sttype'],input[name='sgcourse'],select[name='department_id']" class="mt-5 mb-2">
+	<div class="s-table-filters">
+		<p><i class="ri-filter-line"></i>Фільтри</p>
+	</div>
+	<div class="btn-group wd-100" role="group" aria-label="Basic radio toggle button group" style="position: relative; top: -2rem; left: 2.5rem;">
+		<div class="s-table-filters-sttype">
+			<input type="radio" class="btn-check" value="" name="sttype" id="btnradio0" autocomplete="off" {% if not selected_sttype %}checked{% endif %}>
+			<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio0">Всі</label>
+
+			<input type="radio" class="btn-check" value="Денна" name="sttype" id="btnradio19" autocomplete="off" {% if selected_sttype == "Денна" %}checked{% endif %}>
+			<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio19">Денна</label>
+
+			<input type="radio" class="btn-check" value="Вечірня" name="sttype" id="btnradio20" autocomplete="off" {% if selected_sttype == "Вечірня" %}checked{% endif %}>
+			<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio20">Вечірня</label>
+
+			<input type="radio" class="btn-check" value="Дистанційна" name="sttype" id="btnradio21" autocomplete="off" {% if selected_sttype == "Дистанційна" %}checked{% endif %}>
+			<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio21">Дистанційна</label>
+
+			<input type="radio" class="btn-check" value="Очна" name="sttype" id="btnradio22" autocomplete="off" {% if selected_sttype == "Очна" %}checked{% endif %}>
+			<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio22">Очна</label>
+
+			<input type="radio" class="btn-check" value="Заочна" name="sttype" id="btnradio23" autocomplete="off" {% if selected_sttype == "Заочна" %}checked{% endif %}>
+			<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio23">Заочна</label>
+		</div>
+	</div>
+
+	<div class="btn-group wd-100" role="group" aria-label="Basic radio toggle button group" style="position: relative; top: -2rem; left: 2rem;">
+		<div class="s-table-filters-sgcourse">
+			<input type="radio" class="btn-check" value="" name="sgcourse" id="btnradio0" autocomplete="off" {% if not selected_sgcourse %}checked{% endif %}>
+			<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio0">Всі</label>
+
+			<input type="radio" class="btn-check" value="1" name="sgcourse" id="btnradio24" autocomplete="off" {% if selected_sgcourse == "1" %}checked{% endif %}>
+			<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio24">Перший</label>
+
+			<input type="radio" class="btn-check" value="2" name="sgcourse" id="btnradio25" autocomplete="off" {% if selected_sgcourse == "2" %}checked{% endif %}>
+			<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio25">Другий</label>
+
+			<input type="radio" class="btn-check" value="3" name="sgcourse" id="btnradio26" autocomplete="off" {% if selected_sgcourse == "3" %}checked{% endif %}>
+			<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio26">Третій</label>
+
+			<input type="radio" class="btn-check" value="4" name="sgcourse" id="btnradio27" autocomplete="off" {% if selected_sgcourse == "4" %}checked{% endif %}>
+			<label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio27">Четвертий</label>
+		</div>
+	</div>
+
+	<ul class="s-table-filters-select">
+		<li class="s-table-filters-group" id="sg-filter-dep">
+			<label for="department_id" id="filter-dep">Кафедра:</label>
+			<div class="select-wrapper">
+				<select name="department_id" id="department_id" class="form-select" style="font-size: 0.85rem; border-radius: 30px;">
+					<option value="">Всі</option>
+					{% for department in departments %}
+					<option value="{{ department.id }}" {% if department.id|stringformat:"s" == selected_department_id %}selected{% endif %}>
+						{{ department.abbreviation }}
+					</option>
+					{% endfor %}
+				</select>
+			</div>
+		</li>
+	</ul>
+</form>
+{% endblock filters %}
+
+{% block s-table %}
+<table id="sg-table">
+{% endblock s-table %}
+
+{% block s-table-title-col %}
+<tr>
+	<th>Номер</th>
+	<th>Кафедра</th>
+	<th>Форма навчання</th>
+	<th>Курс</th>
+	<th>Початок навчання</th>
+	<th>Кінець навчання</th>
+	<th colspan="2">Дія</th>
+</tr>
+{% endblock s-table-title-col %}
+
+{% block s-table-data-col %}
+<tbody id="study_group-list" hx-trigger="load, study_groupUpdate from:body" 
+       hx-get="{% url 'phdc_app:study_group_list' %}" hx-target="this">
+    {% include 'study_group_list.html' %}
+</tbody>
+{% endblock s-table-data-col %}

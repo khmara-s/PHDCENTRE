@@ -1,0 +1,326 @@
+{% extends 'students.html' %}
+
+
+{% block base-title %} PHDCENTRE: Профіль аспіранта {% endblock base-title %}
+
+{% block homea-section-title %}{% endblock homea-section-title %}
+
+{% block homea-cards-list %} container mt-3 sp-main-section {% endblock homea-cards-list %}
+{% block homea-cards-list-content %}
+<div class="sp-main-btns">
+	{% block sp-main-btns %}
+	<a href="{% url 'phdc_app:edit_student' student_profile.id %}" class="btn btn-outline-secondary main-btn" id="sp-edit" 
+	{% if group == 'phdstudents' %} style="position: relative; left: 63rem;" {% endif %}>
+		<i class="ri-pencil-line"></i> Редагувати
+	</a>
+	{% if group != 'phdstudents' %}
+	<button hx-get="{% url 'phdc_app:add_student_to_bl' student_profile.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary main-btn">
+		<i class="ri-user-search-line"></i> Перевірити
+	</button>
+	{% endif %}		
+	{% endblock sp-main-btns %}
+</div>
+
+<div id="sp-area">
+	<div class="sp-top">
+		<div class="sp-top-image">
+			<div class="sp-top-imgbox">
+				<img class="sp-image" 
+				src="{% if student_profile.gender == 'Жіноча' %} /static/images/studentpfimgf.png {% else %} /static/images/studentpfimg.png {% endif %}" 
+				alt="Student Profile">
+			</div>
+		</div>
+		<div class="sp-top-info"> 
+			<h3>
+				{% if student_profile.is_approved == 'Очікується перевірка' %}
+				<i class="ri-time-line" style="color: #FFB480; position: relative; left: 10px;"></i>
+				{% elif student_profile.is_approved == 'Не затверджено' %}
+				<i class="ri-close-circle-line" style="color: #ff7a72; position: relative; left: 10px;"></i>
+				{% else %}
+				<i class="ri-checkbox-circle-line" style="color: #92e3a9; position: relative; left: 10px;"></i>
+				{% endif %} 
+				{{student_profile.lastname}}<br>{{student_profile.firstname}}&nbsp;{{student_profile.middlename}}<br>
+				{% if group != 'phdstudents' %}
+				<span class="sp-group">
+					<a href="{% url 'phdc_app:study_group' student_profile.study_group_id.id %}"
+						class="btn btn-outline-secondary" id="sp-group-btn">
+						<i class="ri-group-line"></i> {% if student_profile.study_group_id == None %} Відсутня {% else %} {{student_profile.study_group_id}} {% endif %}
+					</a>
+				</span>
+				{% endif %}
+				{% if group == 'phdstudents' %}
+				<span class="sp-group">
+					<a href="#"
+						class="btn btn-outline-secondary" id="sp-group-btn">
+						<i class="ri-group-line"></i> {% if student_profile.study_group_id == None %} Відсутня {% else %} {{student_profile.study_group_id}} {% endif %}
+					</a>
+				</span>
+				{% endif %}
+				<span class="sp-group">
+					<a href="{% url 'phdc_app:protocols' student_profile.id %}"
+						class="btn btn-outline-secondary" id="sp-group-btn">
+						<i class="ri-file-list-2-line"></i> Протоколи
+					</a>
+				</span>
+				<span class="sp-group">
+					<a href="{% url 'phdc_app:orders' student_profile.id %}"
+						class="btn btn-outline-secondary" id="sp-group-btn">
+						<i class="ri-article-line"></i> Накази
+					</a>
+				</span>
+				<span class="sp-group">
+					<a href="{% url 'phdc_app:reports' student_profile.study_group_id.id %}"
+						class="btn btn-outline-secondary" id="sp-group-btn">
+						<i class="ri-todo-line"></i> Звіти
+					</a>
+				</span>
+			</h3><br>
+			<div class="sp-top-info-detail">
+				<span><i class="ri-price-tag-2-line"></i> {{student_profile.learning_source}}</span>
+				<span><i class="ri-sun-line"></i> Денна</span>
+
+				{% if student_profile.is_graduate == 'Ні' %}
+				<span>Випускник(-ця): <i class="ri-close-circle-line" id="sp-nogr-i"></i></span>
+				{% else %}
+				<span>Випускник(-ця): <i class="ri-checkbox-circle-line"></i></span>
+				{% endif %}
+
+				{% if student_profile.status == 'Навчається' %}
+				<p class="sp-status status-study">Навчається</p>
+				{% elif student_profile.status == 'Академвідпустка' %}
+				<p class="sp-status status-academ">Академвідпустка</p>
+				{% else %}
+				<p class="sp-status status-expelled">Відрахований(-а)</p>
+				{% endif %}
+
+				{% if student_profile.is_defended == 'Захист відсутній' %}
+				<p class="sp-def def-none">Захист відсутній</p>
+				{% elif student_profile.is_defended == 'Рекомендований(-а)' %}
+				<p class="sp-def def-recomended">Рекомендований(-а)</p>
+				{% elif student_profile.is_defended == 'Не захистився(-лась)' %}
+				<p class="sp-def def-no">Не захистився(-лась)</p>
+				{% else %}
+				<p class="sp-def def-yes">Захистився(-лась)</p>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+	<div class="sp-body">
+		<div class="sp-body-left">
+			<h3>Контакти</h3>
+			{% if student_profile.scientific_profile == '' %}
+			<ul class="sp-ul" style="margin-bottom: 7%;">
+				<li>
+					<span class="sp-li-i"><i class="ri-phone-line"></i></span>
+					<span class="sp-li-txt">{{student_profile.phone}}</span>
+				</li>
+				<li>
+					<span class="sp-li-i"><i class="ri-mail-line"></i></span>
+					<span class="sp-li-txt">{{student_profile.email}}</span>
+				</li>
+			</ul>
+
+			<h3>Профіль</h3>
+			<ul class="sp-ul">
+				<li>
+					<span class="sp-li-i"><i class="ri-global-line"></i></span>
+					<span class="sp-li-txt" id="sp-scpf-txt">Посилання відсутнє</span>
+				</li>
+			</ul>
+
+			<h3 class="sp-teacher-title">Керівник</h3>
+			<a href="{% url 'phdc_app:teachers' %}" class="btn btn-outline-secondary" id="sp-btn-tchr-view-default">
+				<i class="ri-eye-line"></i> Список
+			</a>
+			<ul class="sp-ul sp-teacher-ul-default">
+				<li>
+					<span class="sp-li-i"><i class="ri-glasses-line"></i></span>
+					<span class="sp-li-txt">Стеценко Інна Вячеславівна</span>
+				</li>
+			</ul>
+
+			<h3 class="sp-pub-title-default">Публікації</h3>
+			<a href="{% url 'phdc_app:publications' student_profile.id %}" class="btn btn-outline-secondary" id="sp-btn-pub-view-default">
+				<i class="ri-eye-line"></i> Список
+			</a>
+			<ul class="sp-ul sp-pub-default">
+				{% if student_publications %}
+				{% for data in student_publications %}
+				<li>
+					<h5>{{ data.year }}</h5>
+					<h4>{{ data.name }}</h4>
+					<span class="sp-pub-link"><i class="ri-link-m"></i> {{ data.doi }}</span>
+				</li>
+				{% endfor %}
+				{% else %}
+				<li>
+					<h4 style="position: relative; top: -3rem;">Відсутні</h4>
+				</li>
+				{% endif %}
+			</ul>
+			{% else %}
+			<ul style="margin-bottom: 7%;">
+				<li>
+					<span class="sp-li-i"><i class="ri-phone-line"></i></span>
+					<span class="sp-li-txt">{{student_profile.phone}}</span>
+				</li>
+				<li>
+					<span class="sp-li-i"><i class="ri-mail-line"></i></span>
+					<span class="sp-li-txt">{{student_profile.email}}</span>
+				</li>
+				
+			</ul>
+
+			<h3>Профіль</h3>
+			<ul>
+				<li>
+					<span class="sp-li-i"><i class="ri-global-line"></i></span>
+					<span class="sp-li-txt" id="sp-scpf-txt">{{student_profile.scientific_profile}}</span>
+				</li>
+			</ul>
+            
+			<h3 class="sp-teacher-title">Керівник</h3>
+			<a href="{% url 'phdc_app:teachers' %}" class="btn btn-outline-secondary" id="sp-btn-tchr-view">
+				<i class="ri-eye-line"></i> Список
+			</a>
+
+			<ul class="sp-teacher-ul">
+				<li>
+					<span class="sp-li-i"><i class="ri-glasses-line"></i></span>
+					<span class="sp-li-txt">Стеценко Інна Вячеславівна</span>
+				</li>
+			</ul>
+
+			<h3 class="sp-pub-title">Публікації</h3>
+			<a href="{% url 'phdc_app:publications' student_profile.id %}" class="btn btn-outline-secondary" id="sp-btn-pub-view">
+				<i class="ri-eye-line"></i> Список
+			</a>
+			<ul class="sp-pub" style="position: relative; top: -12%;">
+				{% if student_publications %}
+				{% for data in student_publications %}
+				<li>
+					<h5>{{ data.year }}</h5>
+					<h4>{{ data.name }}</h4>
+					<span class="sp-pub-link"><i class="ri-link-m"></i> {{ data.doi }}</span>
+				</li>
+				{% endfor %}
+				{% else %}
+				<li>
+					<h4 style="position: relative; top: -3rem;">Відсутні</h4>
+				</li>
+				{% endif %}
+			</ul>
+			{% endif %}
+		</div>
+	
+		<div class="{% if student_profile.scientific_profile == '' %} sp-body-right-default {% else %} sp-body-right {% endif %}">
+			<div class="sp-body-section section-diss">
+				<h3>Дисертація</h3>
+				<div class="sp-section-btns" style="position: relative; top: -15px; left: 5.5rem;"> 
+					{% if dissertation is None %}
+					<a href="{% url 'phdc_app:add_dissertation' student_profile.id %}" class="btn btn-outline-secondary" id="sp-btn-dis-view">
+						<i class="ri-eye-line"></i> Оглянути
+					</a>
+					{% else %}
+					{% block add-diss %}
+					<a href="{% url 'phdc_app:dissertation' student_profile.id %}" class="btn btn-outline-secondary" id="sp-btn-dis-view">
+						<i class="ri-eye-line"></i> Оглянути
+					</a>
+					{% endblock add-diss %}
+					{% endif %}
+				</div>
+				<div class="sp-section-detail">
+					{% if dissertation is None %}
+					<h4 style="position: relative; top: -42px !important;">Відсутня</h4>
+					<p class="sp-dis-pertxt" style="position: relative; top: -45px !important;">0%</p>
+					<span class="sp-dis-perbar" style="position: relative; top: -45px !important;"><div style="width: 0%;"></div></span>
+                    
+					{% else %}
+					<h4 style="position: relative; top: -42px !important;">{{ dissertation.name }}</h4>
+					<p class="sp-dis-pertxt" style="position: relative; top: -45px !important;">{{ dissertation.state }}</p>
+					<span class="sp-dis-perbar" style="position: relative; top: -45px !important;">
+						{% if dissertation.state == '0%' %}
+						<div class="progress-bar" style="width: 0%;"></div>
+						{% elif dissertation.state == '5%' %}
+						<div class="progress-bar" style="width: 5%;"></div>
+						{% elif dissertation.state == '10%' %}
+						<div class="progress-bar" style="width: 10%;"></div>
+						{% elif dissertation.state == '15%' %}
+						<div class="progress-bar" style="width: 15%;"></div>
+						{% elif dissertation.state == '20%' %}
+						<div class="progress-bar" style="width: 20%;"></div>
+						{% elif dissertation.state == '25%' %}
+						<div class="progress-bar" style="width: 25%;"></div>
+						{% elif dissertation.state == '30%' %}
+						<div class="progress-bar" style="width: 30%;"></div>
+						{% elif dissertation.state == '35%' %}
+						<div class="progress-bar" style="width: 35%;"></div>
+						{% elif dissertation.state == '40%' %}
+						<div class="progress-bar" style="width: 40%;"></div>
+						{% elif dissertation.state == '45%' %}
+						<div class="progress-bar" style="width: 45%;"></div>
+						{% elif dissertation.state == '50%' %}
+						<div class="progress-bar" style="width: 50%;"></div>
+						{% elif dissertation.state == '55%' %}
+						<div class="progress-bar" style="width: 55%;"></div>
+						{% elif dissertation.state == '60%' %}
+						<div class="progress-bar" style="width: 60%;"></div>
+						{% elif dissertation.state == '65%' %}
+						<div class="progress-bar" style="width: 65%;"></div>
+						{% elif dissertation.state == '70%' %}
+						<div class="progress-bar" style="width: 70%;"></div>
+						{% elif dissertation.state == '75%' %}
+						<div class="progress-bar" style="width: 75%;"></div>
+						{% elif dissertation.state == '80%' %}
+						<div class="progress-bar" style="width: 80%;"></div>
+						{% elif dissertation.state == '85%' %}
+						<div class="progress-bar" style="width: 85%;"></div>
+						{% elif dissertation.state == '90%' %}
+						<div class="progress-bar" style="width: 90%;"></div>
+						{% elif dissertation.state == '95%' %}
+						<div class="progress-bar" style="width: 95%;"></div>
+						{% elif dissertation.state == '100%' %}
+						<div class="progress-bar" style="width: 100%;"></div>
+						{% endif %}
+					</span>
+					{% endif %}
+				</div>
+			</div>
+	
+			<div class="sp-body-section section-indplan">
+				<h3>
+					{% block sp-indplan-title %}
+					Індивідуальні плани
+					{% endblock sp-indplan-title %}
+				</h3>
+				<div class="sp-section-detail">
+					{% block sp-indplan-detail %}
+					<div class="sp-indplan-type">
+						<h5>План наукової роботи</h5>
+					</div>
+					<div class="sp-inplan-btns" style="position: relative; left: 4rem;">
+						<a href="{% url 'phdc_app:research_plans' student_profile.id %}" class="btn btn-outline-secondary" id="sp-btn-indplan-view">
+							<i class="ri-eye-line"></i> Оглянути
+						</a>
+					</div>
+					{% endblock sp-indplan-detail %}
+				</div>
+	            
+				{% block sp-educplan %}
+				<div class="sp-section-detail">
+					<div class="sp-indplan-type">
+						<h5>Навчальний план</h5>
+					</div>
+					<div class="sp-inplan-btns" style="position: relative; left: 4.1rem;">
+						<a href="{% url 'phdc_app:educ_plans' student_profile.id %}" class="btn btn-outline-secondary" id="sp-btn-indplan-view">
+							<i class="ri-eye-line"></i> Оглянути
+						</a>
+					</div>
+				</div>
+				{% endblock sp-educplan %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock homea-cards-list-content %}

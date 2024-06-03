@@ -1,0 +1,22 @@
+{% for data in reports %}
+<tr>
+    <td>
+		{% if data.file %}
+            {{ data.file.name }}
+        {% endif %}
+	</td>
+    <td class="s-table-btns">
+		<a href="{% url 'phdc_app:download_report' id=data.id %}" class="btn btn-outline-secondary btn-sm text-light" id="table-btn">
+			<i class="ri-file-download-line"></i>
+		</a>
+        <button hx-get="{% url 'phdc_app:edit_report' id=data.id student_id=student.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-btn">
+            <i class="ri-file-edit-line"></i>
+        </button>
+        <button hx-get="{% url 'phdc_app:delete_report' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-delete-btn">
+            <i class="ri-delete-bin-line"></i>
+        </button>
+    </td>
+    {% empty %}
+    <td colspan="8" class="s-table-empty-rcrd"><strong>Записи відсутні</strong></td>
+</tr>
+{% endfor %}

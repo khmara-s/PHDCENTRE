@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block base-title %} PHDCENTRE: Вхід в систему {% endblock base-title %}
+
+{% block base-nav-img %} 
+<i class="ri-lock-2-line" style="color: #fff;"></i>Вхід 
+{% endblock base-nav-img %}
+{% block base-nav-restart-btn %}
+<a href="{% url 'phdc_app:login_page' %}" class="btn btn-outline">
+{% endblock base-nav-restart-btn %}
+
+{% block base-content %}
+<br><br>
+<div class="container card p-3 mt-5" style="width: 30%;">
+	<div class="card p-3 border-dark text-center" style="font-size: 18px; font-weight: 400;">
+		<span><i class="ri-key-line" id="form-section-title-i"></i>Параметри входу</span>  
+	</div>
+	<br>
+	<form method="POST" autocomplete="off" novalidate>
+		{% csrf_token %}
+		{{ form|crispy }}
+		<br><hr>
+		<div class="d-grid gap-2">
+			<button type="submit" class="btn btn-dark" id="form-main-btn">Увійти</button>
+		</div>
+	</form>
+</div>
+{% endblock base-content %}

@@ -1,0 +1,16 @@
+{% load crispy_forms_tags %}
+
+<form method="post" hx-post="{% url 'phdc_app:edit_deadline' id=id %}" hx-trigger="submit" hx-swap="none" hx-on="htmx:afterRequest: window.location.reload()" class="modal-content">
+  {% csrf_token %}
+  <div class="modal-header"> 
+    <h5 class="modal-title"><i class="ri-pencil-line" style="color: #92e3a9;"></i> Редагування дедлайну</h5>
+  </div>
+  <div class="modal-body">
+    {% csrf_token %}
+    {{ form|crispy }}
+  </div>
+  <div class="modal-footer">
+    <button type="submit" id="modal-save-btn">Зберегти</button>
+    <button type="button" data-bs-dismiss="modal" id="modal-close-btn">Закрити</button>
+  </div>
+</form>

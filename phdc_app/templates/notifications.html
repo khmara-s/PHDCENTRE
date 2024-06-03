@@ -1,0 +1,86 @@
+<div class="modal-dialog" role="document" style="max-width: 800px;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Сповіщення</h5>
+        </div>
+        <div class="modal-body">
+            {% for notification in notifications %}
+                <div class="row mb-2 notification-row" data-id="{{ notification.id }}">
+                    <div class="col-8 text-wrap">
+                        <p class="mb-0">{{ notification.description }}</p>
+                    </div>
+                    <div class="col-4 text-end">
+                        <p class="mb-0">{{ notification.date|date:"F j, g:i a" }}</p>
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-close-btn">Закрити</button>
+            <form action="{% url 'phdc_app:show_notifications' %}" method="post" id="notifications-form">
+                {% csrf_token %}
+                <button type="submit" data-bs-backdrop="static" id="modal-logout-btn">
+                    Позначити усі як прочитані
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<style>
+.unread-indicator {
+    cursor: pointer;
+}
+</style>
+
+
+<script>
+const csrfToken = "{{ csrf_token }}";
+
+document.addEventListener('DOMContentLoaded', function() {
+    const notificationRows = document.querySelectorAll('.notification-row');
+    notificationRows.forEach(row => {
+        row.addEventListener('click', function() {
+            const notificationId = this.getAttribute('data-id');
+            markAsRead(notificationId, this);
+        });
+    });
+
+    const unreadIndicators = document.querySelectorAll('.unread-indicator');
+    unreadIndicators.forEach(indicator => {
+        indicator.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const notificationId = this.getAttribute('data-id');
+            const row = this.closest('.notification-row');
+            markAsRead(notificationId, row);
+        });
+    });
+
+    function markAsRead(notificationId, row) {
+    fetch(`/mark_as_read/${notificationId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken, 
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ is_read: 'Так' })
+    })
+    .then(response => {
+        if (response.ok) {
+            const indicator = row.querySelector('.unread-indicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        } else {
+            console.error('Failed to mark notification as read');
+        }
+    });
+}
+
+
+});
+
+</script>

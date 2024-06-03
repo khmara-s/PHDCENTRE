@@ -1,0 +1,34 @@
+{% extends 'students.html' %}
+
+
+{% block base-title %} PHDCENTRE: Виконавці дедлайну {% endblock base-title %}
+
+{% block homea-reset-btn %}
+<a href="{% url 'phdc_app:deadline_submissions' id=id %}">
+  <i class="ri-restart-line"></i>
+</a>
+{% endblock homea-reset-btn %}
+
+{% block homea-section-title %} 
+<i class="ri-team-line"></i>&nbsp;Виконавці дедлайну 
+{% endblock homea-section-title %}
+
+{% block filters %}{% endblock filters %}
+
+{% block s-table %}
+<table id="sg-table" style="position: relative; top: 5% !important;">
+{% endblock s-table %}
+
+{% block s-table-title-col %}
+<tr>
+  <th>ПІБ</th>
+  <th>Затверджено</th>
+  <th colspan="2">Дія</th>
+</tr>
+{% endblock s-table-title-col %}
+
+{% block s-table-data-col %}
+<tbody hx-trigger="load, deadlineSubmissionUpdate from:body" hx-get="{% url 'phdc_app:deadline_submission_list' id=id %}" hx-target="this"></tbody>
+{% endblock s-table-data-col %}
+
+<div id="dialog"></div> 

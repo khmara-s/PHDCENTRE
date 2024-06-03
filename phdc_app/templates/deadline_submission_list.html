@@ -1,0 +1,16 @@
+{% for data in deadline_submissions %}
+<tr>
+  <td>{{ data.student_id.fullname }}</td>
+  <td>{{ data.is_approved }}</td>
+  <td class="s-table-btns">
+  	<button hx-get="{% url 'phdc_app:approve_submission' id=data.id deadline_id=id  %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-btn">
+    	<i class="ri-check-line"></i>
+  	</button>
+  	<button hx-get="{% url 'phdc_app:decline_submission' id=data.id deadline_id=id  %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-delete-btn">
+    	<i class="ri-close-line"></i>
+  	</button>
+  </td>
+{% empty %}
+  <td colspan="2" class="s-table-empty-rcrd"><strong>Записи відсутні</strong></td>
+</tr>
+{% endfor %}

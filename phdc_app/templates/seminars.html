@@ -1,0 +1,76 @@
+{% extends 'students.html' %}
+
+{% block base-title %} PHDCENTRE: Семінари {% endblock base-title %}
+
+{% block homea-reset-btn %}
+<a href="{% url 'phdc_app:seminars' %}">
+  <i class="ri-restart-line"></i>
+</a>
+{% endblock homea-reset-btn %}
+
+{% block homea-search-field-input %}
+<input class="form-control" type="text" name="seminars_q" placeholder="Пошук" 
+       hx-get="{% url 'phdc_app:seminar_list' %}" 
+       hx-trigger="keyup changed delay:500ms"
+       hx-target="#seminar-list">
+{% endblock homea-search-field-input %}
+
+{% block homea-section-title %} <i class="ri-presentation-line"></i>&nbsp;Семінари {% endblock homea-section-title %}
+
+{% block s-table-add-btn %}
+{% if group != 'phdstudents' %}
+<div class="table-add-btn" id="add-btn">
+  <button hx-get="{% url 'phdc_app:add_seminar' %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary main-btn add-btn">
+    <i class="ri-add-circle-line"></i> Створити семінар
+  </button>
+</div>
+{% endif %}
+{% endblock s-table-add-btn %}
+
+{% block filters %}
+<form id="filter-form" hx-get="{% url 'phdc_app:seminar_list' %}" hx-target="#seminar-list" hx-trigger="change from:select[name='department_id']" class="mt-5 mb-2">
+	<div class="s-table-filters">
+		<p><i class="ri-filter-line"></i>Фільтри</p>
+  </div>
+		
+	<ul class="s-table-filters-select">
+		<li class="s-table-filters-group" id="sem-filter-dep" style="position: relative; right: 35.3rem; top: -10px;">
+			<label for="department_id" id="filter-dep">Кафедра:</label>
+			<div class="select-wrapper">
+				<select name="department_id" id="department_id" class="form-select" style="font-size: 0.85rem; border-radius: 30px;">
+					<option value="">Всі</option>
+					{% for department in departments %}
+					<option value="{{ department.id }}" {% if department.id|stringformat:"s" == selected_department_id %}selected{% endif %}>
+						{{ department.abbreviation }}
+					</option>
+					{% endfor %}
+				</select>
+			</div>
+		</li>
+	</ul>
+</form>
+{% endblock filters %}
+
+{% block s-table %}
+<table id="sg-table" {% if group == 'phdstudents' %} style="position: relative; top: -5%;" {% endif %}>
+{% endblock s-table %}
+
+{% block s-table-title-col %}
+<tr>
+  <th>Назва</th>
+  <th>Кафедра</th>
+  <th>Опис</th>
+  <th>Дата</th>
+  {% if group != 'phdstudents' %}
+  <th>Учасники</th>
+  {% endif %}
+  <th colspan="2">Дія</th>
+</tr>
+{% endblock s-table-title-col %}
+
+{% block s-table-data-col %}
+
+<tbody id="seminar-list" hx-trigger="load, seminarUpdate from:body" hx-get="{% url 'phdc_app:seminar_list' %}" hx-target="this">
+    {% include 'seminar_list.html' %}
+</tbody>
+{% endblock s-table-data-col %}

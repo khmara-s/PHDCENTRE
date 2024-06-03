@@ -1,0 +1,125 @@
+{% extends 'students.html' %}
+
+{% block base-title %} PHDCENTRE: Публікації {% endblock base-title %}
+
+{% block homea-reset-btn %}
+<a href="#">
+  <i class="ri-restart-line"></i>
+</a>
+{% endblock homea-reset-btn %}
+
+{% block homea-search-field-input %}
+<input class="form-control" type="text" name="publications_q" placeholder="Пошук"
+       hx-get="{% url 'phdc_app:publication_list' id=id %}"
+       hx-trigger="keyup changed delay:500ms"
+       hx-target="#publication-list">
+{% endblock homea-search-field-input %}
+
+{% block homea-section-title %} 
+<i class="ri-newspaper-line"></i>&nbsp;Публікації аспіранта
+<p style="font-size: 2.5rem; text-align: center; position: relative;">{{ student.fullname }}</p> 
+{% endblock homea-section-title %}
+
+{% block s-table-add-btn %}
+<div class="table-add-btn" id="pub-add-btn" style="position: relative; top: -9rem !important;">
+  <button hx-get="{% url 'phdc_app:add_publication' student_id=id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary main-btn add-btn">
+    <i class="ri-sticky-note-add-line"></i> Створити публікацію
+  </button>
+</div>
+{% endblock s-table-add-btn %}
+{% block homea-cards-list-content %}
+{% block filters %}
+<form method="GET" class="mt-5 mb-2" hx-get="{% url 'phdc_app:publication_list' id=id %}" hx-target="#publication-list" hx-trigger="change from:form">
+    {% csrf_token %}
+    <div class="s-table-filters">
+        <p><i class="ri-filter-line"></i>Фільтри</p>
+        <div class="btn-group wd-100" role="group" aria-label="Basic radio toggle button group">
+            <div class="s-table-filters-pbappr">
+                <input type="radio" class="btn-check" value="Зарахована" name="pbappr" id="btnradio1" autocomplete="off" {% if selected_pbappr == "Зарахована" %}checked{% endif %}>
+                <label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio1">Зарахована</label>
+
+                <input type="radio" class="btn-check" value="Очікується перевірка" name="pbappr" id="btnradio2" autocomplete="off" {% if selected_pbappr == "Очікується перевірка" %}checked{% endif %}>
+                <label class="btn btn-outline-secondary s-table-filter filter-orange" for="btnradio2">Очікується перевірка</label>
+
+                <input type="radio" class="btn-check" value="Не зарахована" name="pbappr" id="btnradio3" autocomplete="off" {% if selected_pbappr == "Не зарахована" %}checked{% endif %}>
+                <label class="btn btn-outline-secondary s-table-filter filter-red" for="btnradio3">Не зарахована</label>
+            </div>
+
+            <div class="vr vr-status"></div>
+
+            <div class="s-table-filters-pbcoef" style="position: relative; left: 17px;">
+                <input type="radio" class="btn-check" value="0" name="pbcoef" id="btnradio4" autocomplete="off" {% if selected_pbcoef == "0" %}checked{% endif %}>
+                <label class="btn btn-outline-secondary s-table-filter filter-red" for="btnradio4" style="border-radius: 50%;">0</label>
+
+                <input type="radio" class="btn-check" value="0.5" name="pbcoef" id="btnradio5" autocomplete="off" {% if selected_pbcoef == "0.5" %}checked{% endif %}>
+                <label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio5" style="width: 36px; height: 36px; border-radius: 50%;">
+                    <span style="position: relative; right: 4.5px; top: 1px;">0.5</span>
+                </label>
+
+                <input type="radio" class="btn-check" value="1" name="pbcoef" id="btnradio6" autocomplete="off" {% if selected_pbcoef == "1" %}checked{% endif %}>
+                <label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio6" style="width: 36px; height: 36px; border-radius: 50%;">1</label>
+
+                <input type="radio" class="btn-check" value="1.5" name="pbcoef" id="btnradio7" autocomplete="off" {% if selected_pbcoef == "1.5" %}checked{% endif %}>
+                <label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio7" style="width: 36px; height: 36px; border-radius: 50%;">
+                    <span style="position: relative; right: 3px; top: 1px;">1.5</span>
+                </label>
+
+                <input type="radio" class="btn-check" value="2" name="pbcoef" id="btnradio8" autocomplete="off" {% if selected_pbcoef == "2" %}checked{% endif %}>
+                <label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio8" style="width: 36px; height: 36px; border-radius: 50%;">2</label>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock filters %}
+
+{% block s-table %}
+<table id="sg-table">
+{% endblock s-table %}
+
+{% block s-table-title-col %}
+<tr>
+  <th>Тема</th>
+  <th>Тип</th>
+  <th style="width: 200px;"> Видання</th>
+  <th>Doi</th>
+  <th>Зарахування</th>
+  <th>Коефіцієнт зарахування</th>
+  <th colspan="2">Дія</th>
+</tr>
+{% endblock s-table-title-col %}
+
+{% block s-table-data-col %}
+<tbody id="publication-list" hx-trigger="load, publicationUpdate from:body" hx-get="{% url 'phdc_app:publication_list' id=id %}" hx-target="this">
+  {% include 'publication_list.html' %}
+</tbody>
+{% endblock s-table-data-col %}
+
+<div id="dialog"></div> 
+
+<nav class="table-pagination">
+	{% if publications.has_other_pages %}
+	<ul class="pagination">
+		{% if publications.has_previous %}
+		<a href="?page=1" class="btn btn-outline-secondary mb-4"><i class="ri-arrow-left-double-line"></i></a>
+		{% else %}
+		<li class="page-item disabled"></li>
+		{% endif %}
+
+		{% for el in publications.paginator.page_range %}
+		{% if publications.number == el %}
+		<li class="page-item active"><span class="page-link">{{ el }}<span class="sr-only"></span></span></li>
+		{% else %}
+		<li class="page-item"><a class="page-link" href="?page={{ el }}">{{ el }}</a></li>
+		{% endif %}
+		{% endfor %}
+
+		{% if publications.has_next %}
+		<a href="?page={{ publications.paginator.num_pages }}" class="btn btn-outline-secondary mb-4"><i
+				class="ri-arrow-right-double-line"></i></a> <!-- Остання -->
+		{% else %}
+		<li class="page-item disabled"></li>
+		{% endif %}
+	</ul>
+	{% endif %}
+</nav>
+{% endblock homea-cards-list-content %}

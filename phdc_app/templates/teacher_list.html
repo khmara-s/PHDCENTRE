@@ -1,0 +1,35 @@
+{% for data in teachers %}
+<tr>
+    <td>{{ data.lastname }} {{ data.firstname }} {{ data.middlename }}</td>
+    {% if data.phone == '' %}
+    <td>Номер телефону відсутній</td>
+    {% else %}
+    <td>{{ data.phone }}</td>
+    {% endif %}
+    {% if data.email == '' %}
+    <td>Е-пошта відсутня</td>
+    {% else %}
+    <td>{{ data.email }}</td>
+    {% endif %}
+    <td>{{ data.academic_status }}</td>
+    {% if data.scientific_profile == '' %}
+    <td>Посилання відсутнє</td>
+    {% else %}
+    <td>{{ data.scientific_profile }}</td>
+    {% endif %}
+    {% if group != 'phdstudents' %}
+    <td class="s-table-btns">
+        <button hx-get="{% url 'phdc_app:edit_teacher' data.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-btn">
+            <i class="ri-pencil-line"></i>
+        </button>
+        <button hx-get="{% url 'phdc_app:delete_teacher' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-delete-btn">
+            <i class="ri-delete-bin-line"></i>
+        </button>
+    </td>
+    {% endif %}
+</tr>
+{% empty %}
+<tr>
+    <td colspan="6" class="s-table-empty-rcrd"><strong>Записи відсутні</strong></td>
+</tr>
+{% endfor %}

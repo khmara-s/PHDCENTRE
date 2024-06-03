@@ -1,0 +1,48 @@
+{% extends 'students.html' %}
+
+
+{% block base-title %} PHDCENTRE: Спеціальності {% endblock base-title %}
+
+{% block homea-reset-btn %}
+<a href="#">
+	<i class="ri-restart-line"></i>
+</a>
+{% endblock homea-reset-btn %}
+
+{% block homea-search-field-input %}
+<input class="form-control" type="text" name="specialties_q" placeholder="Пошук" 
+       hx-get="{% url 'phdc_app:specialty_list' %}" 
+       hx-trigger="keyup changed delay:500ms"
+       hx-target="#specialty-list">
+{% endblock homea-search-field-input %}
+
+{% block homea-section-title %} <i class="ri-hammer-line"></i>&nbsp;Спеціальності {% endblock homea-section-title %}
+
+{% block s-table-add-btn %}
+<div class="table-add-btn" id="spec-add-btn">
+	<button hx-get="{% url 'phdc_app:add_specialty' %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary main-btn add-btn">
+		<i class="ri-add-circle-line"></i> Створити спеціальність
+	</button>
+</div>
+{% endblock s-table-add-btn %}
+
+{% block filters %}{% endblock filters %}
+
+{% block s-table %}
+<table id="spec-table">
+{% endblock s-table %}
+
+{% block s-table-title-col %}
+<tr>
+	<th>Назва</th>
+	<th>Номер</th>
+	<th>Галузь</th>
+	<th colspan="2">Дія</th>
+</tr>
+{% endblock s-table-title-col %}
+
+{% block s-table-data-col %}
+<tbody id="specialty-list" hx-trigger="load, specialtyUpdate from:body" hx-get="{% url 'phdc_app:specialty_list' %}" hx-target="this">
+    {% include 'specialty_list.html' %}
+</tbody>
+{% endblock s-table-data-col %}

@@ -1,0 +1,19 @@
+{% extends 'modals/base_modal.html' %}
+
+{% block modal-id %} id="logout-modal" {% endblock modal-id %}
+
+{% block modal-title %}
+<i class="ri-logout-circle-r-line"></i>&nbsp; Вихід із системи
+{% endblock modal-title %}
+
+{% block modal-body %}
+<div class="text-center" style="font-size: 1.2rem; font-weight: 400; color:#FF6961;">Здійснити вихід із системи?</div>
+{% endblock modal-body %}
+
+{% block modal-footer %}
+<form method="post" action="{% url 'phdc_app:logout' %}">
+	{% csrf_token %}
+	<button type="submit" id="modal-logout-btn">Вийти</button>
+</form>
+<a href="#" class="btn" data-dismiss="modal" id="modal-close-btn">Закрити</a>
+{% endblock modal-footer %}

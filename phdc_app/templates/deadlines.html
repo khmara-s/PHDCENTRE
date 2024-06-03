@@ -1,0 +1,68 @@
+{% extends 'home_admin.html' %}
+
+
+{% block base-title %} PHDCENTRE: Дедлайни {% endblock base-title %}
+
+{% block homea-cards-list %} container mt-3 deadl-main-section {% endblock homea-cards-list %}
+
+{% block homea-section-title %}
+<i class="ri-timer-line"></i>&nbsp;Дедлайни
+{% endblock homea-section-title %}
+
+{% block homea-cards-list-content %}
+{% if group != 'phdstudents' %}
+{% block add-deadl %}
+<div class="deadlines-top" style="position: relative; top: -2rem; left: 34.5rem;">
+  <a href="{% url 'phdc_app:add_deadline' %}" data-bs-backdrop="static" class="btn btn-outline-secondary main-btn add-btn" id="deadl-add-btn">
+    <i class="ri-add-circle-line"></i> Створити дедлайн
+  </a>
+</div>
+{% endblock add-deadl %}
+{% endif %}
+
+<div class="deadl-cards">
+  {% block deadl-cards %}
+  {% for data in deadlines %}
+  <div class="deadl-card">
+    <div class="deadl-card-img">
+      <div class="deadl-card-imgbox">
+        {% if data.date > currdate %}
+        <img src="/static/images/deadline.png">
+        {% else %}
+        <img src="/static/images/deadlinenoactive.png">
+        {% endif %}
+      </div>
+    </div>
+    <div class="deadl-card-content">
+      <h4>{{ data.category }}</h4>
+      <button hx-get="{% url 'phdc_app:show_deadline_info' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" id="table-btn" class="deadl-edit" type="button">
+        <i class="ri-file-copy-2-line"></i>
+      </button>
+      {% if group != 'phdstudents' %}
+      <a href="{% url 'phdc_app:deadline_submissions' id=data.id %}" class="btn btn-outline-secondary" id="deadl-view">
+        <i class="ri-eye-line"></i>
+      </a>
+      <button hx-get="{% url 'phdc_app:edit_deadline' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" id="table-btn" class="deadl-edit" type="button">
+        <i class="ri-pencil-line"></i>
+      </button>
+      <button hx-get="{% url 'phdc_app:delete_deadline' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" id="table-btn" class="deadl-del" type="button">
+        <i class="ri-delete-bin-line"></i>
+      </button>
+      {% endif %}
+      {% if group == 'phdstudents' %}
+        <button hx-get="{% url 'phdc_app:add_deadline_submission' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" id="table-btn" class="deadl-edit" type="button">
+          <i class="ri-add-line"></i>
+        </button>
+        <button hx-get="{% url 'phdc_app:delete_deadline_submission' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" id="table-btn" class="deadl-del" type="button">
+          <i class="ri-subtract-line"></i>
+        </button>
+        
+      {% endif %}
+    </div>
+  </div>
+  {% empty %}
+  <div><strong>Записи відсутні</strong></div>
+  {% endfor %}
+  {% endblock deadl-cards %}
+</div>
+{% endblock homea-cards-list-content %}

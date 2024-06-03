@@ -1,0 +1,13 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="ri-file-copy-2-line" style="color: #92e3a9;"></i> Деталі плану наукової роботи</h5>
+      </div>
+      <div class="modal-body">
+        <p>Зміст плану наукової роботи: {% if research_plan.content is None %} - {% else %} {{ research_plan.content }} {% endif %}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-close-btn">Закрити</button>
+      </div>
+    </div>
+  </div>

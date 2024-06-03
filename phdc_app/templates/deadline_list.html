@@ -1,0 +1,24 @@
+<div class="deadl-card">
+    <div class="deadl-card-img">
+      <div class="deadl-card-imgbox">
+        {% if data.is_active == 'Активний' %}
+        <img src="/static/images/deadline.png">
+        {% else %}
+        <img src="/static/images/deadlinenoactive.png">
+        {% endif %}
+      </div>
+    </div>
+    <div class="deadl-card-content">
+      <h4>{{data.category}}</h4>
+      <button hx-get="{% url 'phdc_app:edit_deadline' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" id="table-btn" class="deadl-edit" type="button"><i class="ri-pencil-line"></i></button>
+      <a href="{% url 'phdc_app:deadline_submissions' id=data.id %}" class="btn btn-outline-secondary btn-sm text-light" id="table-btn">
+        <i class="ri-eye-line"></i>
+      </a>
+      <button hx-get="{% url 'phdc_app:delete_deadline' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" id="table-btn" class="deadl-edit" type="button"><i class="ri-delete-bin-line"></i></button>
+    </div>
+  </div>
+  {% empty %}
+  <div> <strong>Записи відсутні</strong></div>
+
+
+  

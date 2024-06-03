@@ -1,0 +1,21 @@
+{% for data in educ_plans %}
+<tr>
+	<td>{{ data.discipline }}</td>
+	<td>{{ data.year }}</td>
+	<td>{{ data.semester }}</td>
+	<td>{{ data.dis_type }}</td>
+	<td>{{ data.dis_credit }}</td>
+	<td>{{ data.attestation_form }}</td>
+	<td>{{ data.location }}</td>
+	<td class="s-table-btns">
+		<button hx-get="{% url 'phdc_app:edit_educ_plan' id=data.id student_id=student.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-btn">
+			<i class="ri-file-edit-line"></i>
+		</button>
+		<button hx-get="{% url 'phdc_app:delete_educ_plan' id=data.id   %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-delete-btn">
+			<i class="ri-delete-bin-line"></i>
+		</button>
+	</td>
+	{% empty %}
+	<td colspan="8" class="s-table-empty-rcrd"><strong>Записи відсутні</strong></td>
+</tr>
+{% endfor %}

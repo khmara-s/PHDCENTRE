@@ -1,0 +1,52 @@
+{% extends 'students.html' %}
+
+
+{% block base-title %} PHDCENTRE: Видання {% endblock base-title %}
+
+{% block homea-reset-btn %}
+<a href="#">
+	<i class="ri-restart-line"></i>
+</a>
+{% endblock homea-reset-btn %}
+
+{% block homea-search-field-input %}
+<input class="form-control" type="text" name="editions_q" placeholder="Пошук" 
+       hx-get="{% url 'phdc_app:edition_list' %}" 
+       hx-trigger="keyup changed delay:500ms"
+       hx-target="#edition-list">
+{% endblock homea-search-field-input %}
+
+{% block homea-section-title %} <i class="ri-pages-line"></i>&nbsp;Видання {% endblock homea-section-title %}
+
+{% block s-table-add-btn %}
+<div class="table-add-btn" id="edition-add-btn" style="position: relative; top: -1% !important; left: 3.5%;">
+	<button hx-get="{% url 'phdc_app:add_edition' %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary main-btn add-btn">
+		<i class="ri-sticky-note-add-line"></i> Створити видання
+	</button>
+</div>
+{% endblock s-table-add-btn %}
+
+{% block filters %}{% endblock filters %}
+
+{% block s-table %}
+<table id="spec-table">
+{% endblock s-table %}
+
+{% block s-table-title-col %}
+<tr>
+	<th>Назва</th>
+	<th>ISSN електронне</th>
+	<th>ISSN друковане</th>
+	<th>ISBN електронне</th>
+	<th>ISBN друковане</th>
+	<th>Фахові спеціальності</th>
+	<th colspan="2">Дія</th>
+</tr>
+{% endblock s-table-title-col %}
+
+{% block s-table-data-col %}
+
+<tbody id="edition-list" hx-trigger="load, editionUpdate from:body" hx-get="{% url 'phdc_app:edition_list' %}" hx-target="this">
+    {% include 'edition_list.html' %}
+</tbody>
+{% endblock s-table-data-col %}

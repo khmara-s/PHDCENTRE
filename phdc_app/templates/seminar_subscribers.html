@@ -1,0 +1,42 @@
+{% extends 'students.html' %}
+
+
+{% block base-title %} PHDCENTRE: Учасники семінару {% endblock base-title %}
+
+{% block homea-reset-btn %}
+<a href="{% url 'phdc_app:seminar_subscribers' id=id %}">
+  <i class="ri-restart-line"></i>
+</a>
+{% endblock homea-reset-btn %}
+
+{% block homea-title %} semsub-title {% endblock homea-title %}
+{% block homea-section-title %} 
+<i class="ri-team-line"></i>&nbsp;Учасники семінару<p style="font-size: 2.5rem; text-align: center; position: relative; right: 115px;">"{{ seminar.name }}"</p>  
+{% endblock homea-section-title %}
+
+{% block s-table-add-btn %}
+<div class="table-add-btn" id="spec-add-btn" style="position: relative; left: 45px;">
+  <button hx-get="{% url 'phdc_app:add_seminar_subscriber' id=id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary main-btn add-btn">
+    <i class="ri-user-add-line"></i> Додати аспіранта
+  </button>
+</div>
+{% endblock s-table-add-btn %}
+
+{% block filters %}{% endblock filters %}
+
+{% block s-table %}
+<table id="spec-table">
+{% endblock s-table %}
+
+{% block s-table-title-col %}
+<tr>
+  <th>ПІБ</th>
+  <th colspan="2">Дія</th>
+</tr>
+{% endblock s-table-title-col %}
+
+{% block s-table-data-col %}
+<tbody hx-trigger="load, seminar_subscriberUpdate from:body" hx-get="{% url 'phdc_app:seminar_subscribers_list' id=id %}" hx-target="this"></tbody>
+{% endblock s-table-data-col %}
+
+<div id="dialog"></div> 

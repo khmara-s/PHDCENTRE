@@ -1,0 +1,14 @@
+{% for data in specialties %}
+<tr>
+	<td>{{ data.name }}</td>
+	<td>{{ data.number }}</td>
+	<td>{{ data.area }}</td>
+	<td class="s-table-btns">
+		<button hx-get="{% url 'phdc_app:delete_edition_spec' id=data.id edition_id=edition_id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-delete-btn">
+			<i class="ri-delete-bin-line"></i>
+		  </button>
+	</td>
+	{% empty %}
+	<td colspan="4" class="s-table-empty-rcrd"><strong>Записи відсутні</strong></td>
+</tr>
+{% endfor %}

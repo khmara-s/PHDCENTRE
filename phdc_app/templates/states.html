@@ -1,0 +1,92 @@
+{% extends 'students.html' %}
+
+
+{% block homea-reset-btn %}
+<a href="{% url 'phdc_app:states' dissertation.id %}">
+	<i class="ri-restart-line"></i>
+</a>
+{% endblock homea-reset-btn %}
+
+{% block homea-title %} dissstates-title {% endblock homea-title %}
+{% block homea-section-title %} 
+<i class="ri-percent-line"></i>&nbsp;Стан дисертації<p style="font-size: 2.5rem; text-align: center; position: relative; right: 17rem;">"{{ dissertation.name }}"</p> 
+{% endblock homea-section-title %}
+
+{% block filters %}{% endblock filters %}
+
+{% block s-table %}
+<table id="spec-table">
+{% endblock s-table %}
+
+{% block s-table-title-col %}
+<tr>
+	<th>Стан</th>
+	<th>Дата</th>
+	<th colspan="2">Дія</th>
+</tr>
+{% endblock s-table-title-col %}
+
+{% block s-table-data-col %}
+{% for data in states %}
+<tr>
+	<td>
+		<p class="diss-state-pertxt" style="position: relative; top: 1rem;">
+			{{ data.new_state }}
+		</p>
+		<span class="diss-state-perbar" style="position: relative; top: 1rem;">
+			{% if data.new_state == '0%' %}
+			<div class="progress-bar" style="width: 0%;"></div>
+			{% elif data.new_state == '5%' %}
+			<div class="progress-bar" style="width: 5%;"></div>
+			{% elif data.new_state == '10%' %}
+			<div class="progress-bar" style="width: 10%;"></div>
+			{% elif data.new_state == '15%' %}
+			<div class="progress-bar" style="width: 15%;"></div>
+			{% elif data.new_state == '20%' %}
+			<div class="progress-bar" style="width: 20%;"></div>
+			{% elif data.new_state == '25%' %}
+			<div class="progress-bar" style="width: 25%;"></div>
+			{% elif data.new_state == '30%' %}
+			<div class="progress-bar" style="width: 30%;"></div>
+			{% elif data.new_state == '35%' %}
+			<div class="progress-bar" style="width: 35%;"></div>
+			{% elif data.new_state == '40%' %}
+			<div class="progress-bar" style="width: 40%;"></div>
+			{% elif data.new_state == '45%' %}
+			<div class="progress-bar" style="width: 45%;"></div>
+			{% elif data.new_state == '50%' %}
+			<div class="progress-bar" style="width: 50%;"></div>
+			{% elif data.new_state == '55%' %}
+			<div class="progress-bar" style="width: 55%;"></div>
+			{% elif data.new_state == '60%' %}
+			<div class="progress-bar" style="width: 60%;"></div>
+			{% elif data.new_state == '65%' %}
+			<div class="progress-bar" style="width: 65%;"></div>
+			{% elif data.new_state == '70%' %}
+			<div class="progress-bar" style="width: 70%;"></div>
+			{% elif data.new_state == '75%' %}
+			<div class="progress-bar" style="width: 75%;"></div>
+			{% elif data.new_state == '80%' %}
+			<div class="progress-bar" style="width: 80%;"></div>
+			{% elif data.new_state == '85%' %}
+			<div class="progress-bar" style="width: 85%;"></div>
+			{% elif data.new_state == '90%' %}
+			<div class="progress-bar" style="width: 90%;"></div>
+			{% elif data.new_state == '95%' %}
+			<div class="progress-bar" style="width: 95%;"></div>
+			{% elif data.new_state == '100%' %}
+			<div class="progress-bar" style="width: 100%;"></div>
+			{% endif %}
+		</span>
+	</td>
+	<td>{{ data.date }}</td>
+	<td class="s-table-btns">
+		<a href="{% url 'phdc_app:student_profile' data.id %}" class="btn btn-outline-secondary btn-sm text-light" id="table-delete-btn">
+			<i class="ri-delete-bin-line"></i>
+		</a>
+	</td>
+	{% empty %}
+	<td colspan="3" class="s-table-empty-rcrd"><strong>Записи відсутні</strong></td>
+</tr>
+{% endfor %}
+{% endblock s-table-data-col %}

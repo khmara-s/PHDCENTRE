@@ -1,0 +1,225 @@
+{% extends 'students.html' %}
+
+
+{% block base-title %} PHDCENTRE: Дисертація {% endblock base-title %}
+
+{% block homea-section-title %}{% endblock homea-section-title %}
+
+{% block homea-cards-list %} container mt-3 diss-main-section {% endblock homea-cards-list %}
+
+{% block homea-cards-list-content %}
+{% block sp-main-btns %}
+<a href="{% url 'phdc_app:edit_dissertation' dissertation.id dissertation.state %}" class="btn btn-outline-secondary"
+    id="diss-btn" style="position: relative; left: 57rem; top: 1rem;">
+    <i class="ri-file-edit-line"></i> Редагувати
+</a>
+<a hx-get="{% url 'phdc_app:delete_dissertation' dissertation.id %}" hx-target="#dialog" data-bs-backdrop="static"
+    class="btn btn-outline-secondary" id="diss-btn-del" style="position: relative; left: 57rem; top: 1rem;">
+    <i class="ri-delete-bin-line"></i> Видалити
+</a>
+{% endblock sp-main-btns %}
+
+<div class="diss-top">
+    <div class="diss-top-image">
+        <div class="diss-top-imgbox">
+            {% block diss-image %}
+            <img class="diss-image" src="/static/images/diss_img.png" alt="Dissertation Image">
+            {% endblock diss-image %}
+        </div>
+    </div>
+    
+    <div class="diss-top-info">
+        {% block diss-title %}
+        <h3>Дисертація<br>
+            <p>аспірант(-ка):&nbsp;{{ student.lastname }}&nbsp;{{ student.firstname }}&nbsp;{{ student.middlename }}</p>
+            <br>
+            {% endblock diss-title %}
+            <span class="diss-btns">
+                {% block diss-download-btn %}
+                <a href="{% url 'phdc_app:download_file' dissertation.id %}" class="btn btn-outline-secondary"
+                    id="diss-btn">
+                    <i class="ri-file-download-line"></i> Завантажити
+                </a>
+                {% endblock diss-download-btn %}
+            </span>
+        </h3>
+    </div>
+</div>
+
+<div class="diss-body">
+    <div class="diss-body-left">
+        {% block diss-body-left %}
+        <h3>Тема</h3>
+        <div class="diss-left-section-detail" id="section-theme">
+            <h4>
+                {% block diss-theme %}
+                {{ dissertation.name }}
+                {% endblock diss-theme %}
+            </h4>
+        </div>
+
+        <h3>Анотація</h3>
+        <div class="diss-left-section-detail" id="section-abstract">
+            <h5>
+                {% block diss-abstract %}
+                {% if dissertation.abstract == ' ' %}
+                Відсутня
+                {% else %}
+                {{ dissertation.abstract }}
+                {% endif %}
+                {% endblock diss-abstract %}
+            </h5>
+        </div>
+        {% endblock diss-body-left %}
+    </div>
+
+    <div class="diss-body-right">
+        {% block diss-body-right %}
+        <h3 class="diss-right-h3" id="diss-state-h3">Стан дисертації</h3>
+        <a href="{% url 'phdc_app:states' dissertation.id %}" class="btn btn-outline-secondary"
+            id="diss-btn-state-view">
+            <i class="ri-eye-line"></i> Оглянути
+        </a>
+
+        <div class="diss-right-section-detail">
+            <p class="diss-state-pertxt">
+                {{ dissertation.state }}
+            </p>
+            <span class="diss-state-perbar">
+                {% if dissertation.state == '0%' %}
+                <div class="progress-bar" style="width: 0%;"></div>
+                {% elif dissertation.state == '5%' %}
+                <div class="progress-bar" style="width: 5%;"></div>
+                {% elif dissertation.state == '10%' %}
+                <div class="progress-bar" style="width: 10%;"></div>
+                {% elif dissertation.state == '15%' %}
+                <div class="progress-bar" style="width: 15%;"></div>
+                {% elif dissertation.state == '20%' %}
+                <div class="progress-bar" style="width: 20%;"></div>
+                {% elif dissertation.state == '25%' %}
+                <div class="progress-bar" style="width: 25%;"></div>
+                {% elif dissertation.state == '30%' %}
+                <div class="progress-bar" style="width: 30%;"></div>
+                {% elif dissertation.state == '35%' %}
+                <div class="progress-bar" style="width: 35%;"></div>
+                {% elif dissertation.state == '40%' %}
+                <div class="progress-bar" style="width: 40%;"></div>
+                {% elif dissertation.state == '45%' %}
+                <div class="progress-bar" style="width: 45%;"></div>
+                {% elif dissertation.state == '50%' %}
+                <div class="progress-bar" style="width: 50%;"></div>
+                {% elif dissertation.state == '55%' %}
+                <div class="progress-bar" style="width: 55%;"></div>
+                {% elif dissertation.state == '60%' %}
+                <div class="progress-bar" style="width: 60%;"></div>
+                {% elif dissertation.state == '65%' %}
+                <div class="progress-bar" style="width: 65%;"></div>
+                {% elif dissertation.state == '70%' %}
+                <div class="progress-bar" style="width: 70%;"></div>
+                {% elif dissertation.state == '75%' %}
+                <div class="progress-bar" style="width: 75%;"></div>
+                {% elif dissertation.state == '80%' %}
+                <div class="progress-bar" style="width: 80%;"></div>
+                {% elif dissertation.state == '85%' %}
+                <div class="progress-bar" style="width: 85%;"></div>
+                {% elif dissertation.state == '90%' %}
+                <div class="progress-bar" style="width: 90%;"></div>
+                {% elif dissertation.state == '95%' %}
+                <div class="progress-bar" style="width: 95%;"></div>
+                {% elif dissertation.state == '100%' %}
+                <div class="progress-bar" style="width: 100%;"></div>
+                {% endif %}
+            </span>
+        </div>
+
+        <ul>
+            <li>
+                <h3 class="diss-right-h3">Вчена Рада</h3>
+                <div class="diss-right-section-detail" id="section-cypher">
+                    <span class="diss-i"><i class="ri-hashtag"></i></span>
+                    <span class="diss-txt">
+                        {% if dissertation.council_cypher == ' ' %}
+                        Відсутня
+                        {% else %}
+                        {{ dissertation.council_cypher }}
+                        {% endif %}
+                    </span>
+                </div>
+            </li>
+
+            <li>
+                <h3 class="diss-right-h3" id="diss-def-date-h3">Дата захисту</h3>
+                <div class="diss-right-section-detail" id="section-def-date">
+                    <span class="diss-i"><i class="ri-calendar-event-line"></i></span>
+                    <span class="diss-txt">
+                        {% if dissertation.defense_date == ' ' %}
+                        Відсутня
+                        {% else %}
+                        {{ dissertation.defense_date }}
+                        {% endif %}
+                    </span>
+                </div>
+            </li>
+        </ul>
+
+        <h3 class="diss-right-h3" id="diss-def-link-h3">Повідомлення</h3>
+        <div class="diss-right-section-detail" id="section-link">
+            <span class="diss-i"><i class="ri-links-line"></i></span>
+            <span class="diss-txt">
+                {% if dissertation.defense_link == ' ' %}
+                Відсутнє
+                {% else %}
+                {{ dissertation.defense_link }}
+                {% endif %}
+            </span>
+        </div>
+
+        <ul>
+            <li>
+                <h3 class="diss-right-h3">Рецензенти</h3>
+                <div class="diss-right-section-detail" id="section-reviewer1">
+                    <span class="diss-i"><i class="ri-user-2-line"></i></span>
+                    <span class="diss-txt">
+                        {% if reviewer_1 %}
+                        {% for data in reviewer_1 %}
+                        {{ data.reviewer_id }}
+                        {% endfor %}
+                        {% else %}
+                        Відсутній
+                        {% endif %}
+                </div>
+            </li>
+
+            <li>
+                <div class="diss-right-section-detail" id="section-reviewer2">
+                    <span class="diss-i"><i class="ri-user-2-line"></i></span>
+                    <span class="diss-txt">
+                        {% if reviewer_2 %}
+                        {% for data in reviewer_2 %}
+                        {{ data.reviewer_id }}
+                        {% endfor %}
+                        {% else %}
+                        Відсутній
+                        {% endif %}
+                    </span>
+                </div>
+            </li>
+        </ul>
+        {% endblock diss-body-right %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var deleteButtons = document.querySelectorAll('#delete_diss-btn');
+        deleteButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var dissertationId = this.getAttribute('data-id');
+                var modalForm = document.querySelector('#delete-diss-modal form');
+                var actionUrl = "{% url 'phdc_app:delete_dissertation' id=0 %}".replace("0", dissertationId);
+                modalForm.setAttribute('action', actionUrl);
+            });
+        });
+    });
+</script>
+{% endblock homea-cards-list-content %}

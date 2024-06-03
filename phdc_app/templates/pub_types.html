@@ -1,0 +1,46 @@
+{% extends 'students.html' %}
+
+
+{% block base-title %} PHDCENTRE: Типи публікацій {% endblock base-title %}
+
+{% block homea-reset-btn %}
+<a href="{% url 'phdc_app:pub_types' %}">
+  <i class="ri-restart-line"></i>
+</a>
+{% endblock homea-reset-btn %}
+
+{% block homea-search-field-input %}
+<input class="form-control" type="text" name="pub_types_q" placeholder="Пошук" 
+       hx-get="{% url 'phdc_app:pub_type_list' %}" 
+       hx-trigger="keyup changed delay:500ms"
+       hx-target="#pub_type-list">
+{% endblock homea-search-field-input %}
+
+{% block homea-section-title %} <i class="ri-shapes-line"></i>&nbsp;Типи публікацій {% endblock homea-section-title %}
+
+{% block s-table-add-btn %}
+<div class="table-add-btn" id="pbt-add-btn" style="position: relative; top: -1%; left: 6%;">
+  <button hx-get="{% url 'phdc_app:add_pub_type' %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary main-btn add-btn">
+    <i class="ri-add-circle-line"></i> Створити тип
+  </button>
+</div>
+{% endblock s-table-add-btn %}
+
+{% block filters %}{% endblock filters %}
+
+{% block s-table %}
+<table id="spec-table">
+{% endblock s-table %}
+
+{% block s-table-title-col %}
+<tr>
+  <th>Тип</th>
+  <th colspan="2">Дія</th>
+</tr>
+{% endblock s-table-title-col %}
+
+{% block s-table-data-col %}
+<tbody id="pub_type-list" hx-trigger="load, pubTypeUpdate from:body" hx-get="{% url 'phdc_app:pub_type_list' %}" hx-target="this">
+    {% include 'pub_type_list.html' %}
+</tbody>
+{% endblock s-table-data-col %}

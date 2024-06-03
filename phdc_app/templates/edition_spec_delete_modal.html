@@ -1,0 +1,17 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="ri-delete-bin-5-line"></i>&nbsp;Видалення</h5>
+      </div>
+      <div class="modal-body">
+        <p class="text-center" style="font-size: 1.2rem; font-weight: 400; color:#FF6961;">Видалити спеціальність як фахову для видання?</p>
+      </div>
+      <div class="modal-footer">
+        <form method="post" hx-post="{% url 'phdc_app:delete_edition_spec' id=id edition_id=edition_id %}" hx-trigger="click" hx-swap="none">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger" id="modal-logout-btn">Видалити</button>
+        </form>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-close-btn">Закрити</button>
+      </div>
+    </div>
+  </div>

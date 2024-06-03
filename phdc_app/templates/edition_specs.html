@@ -1,0 +1,41 @@
+{% extends 'students.html' %}
+
+
+{% block base-title %} PHDCENTRE: Фахові спеціальності видання {% endblock base-title %}
+
+{% block homea-reset-btn %}
+<a href="#">
+	<i class="ri-restart-line"></i>
+</a>
+{% endblock homea-reset-btn %}
+
+{% block homea-section-title %} 
+<i class="ri-hammer-line"></i>&nbsp;Фахові спеціальності видання: <br> <p style="font-size: 2.5rem; text-align: center; position: relative; left: 30px;">"{{ edition.name }}"</p>
+{% endblock homea-section-title %}
+
+{% block s-table-add-btn %}
+<div class="table-add-btn" id="spec-add-btn">
+	<button hx-get="{% url 'phdc_app:add_edition_spec' id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary main-btn add-btn">
+		<i class="ri-add-circle-line"></i>  Додати спеціальність
+	</button>
+</div>
+{% endblock s-table-add-btn %}
+
+{% block filters %}{% endblock filters %}
+
+{% block s-table %}
+<table id="spec-table">
+{% endblock s-table %}
+
+{% block s-table-title-col %}
+<tr>
+	<th>Назва</th>
+	<th>Номер</th>
+	<th>Галузь</th>
+	<th colspan="2">Дія</th>
+</tr>
+{% endblock s-table-title-col %}
+
+{% block s-table-data-col %}
+<tbody hx-trigger="load, editionSpecUpdate from:body" hx-get="{% url 'phdc_app:edition_spec_list' id %}" hx-target="this"></tbody>
+{% endblock s-table-data-col %}

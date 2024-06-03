@@ -1,0 +1,18 @@
+{% for data in blacklists %}
+<tr>
+  <td>{{ data.student_id.fullname }}</td>
+  <td class="s-table-btns">
+    <button hx-get="{% url 'phdc_app:show_bl_entry_info' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-btn">
+      <i class="ri-eye-line"></i>
+    </button>
+  </td>
+  <td>{{ data.date }}</td>
+  <td class="s-table-btns">
+    <button hx-get="{% url 'phdc_app:delete_bl_entry' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-delete-btn">
+      <i class="ri-delete-bin-line"></i>
+    </button>
+  </td>
+  {% empty %}
+  <td colspan="2" class="s-table-empty-rcrd"><strong>Записи відсутні</strong></td>
+</tr>
+{% endfor %}

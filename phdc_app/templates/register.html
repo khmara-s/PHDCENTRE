@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block base-title %} PHDCENTRE: Реєстрація {% endblock base-title %}
+
+{% block base-content %}
+<div class="container mt-3" style="width: 95%; font-size: 14px;">
+	<form method="POST" class="card p-3 mt-5" autocomplete="off" novalidate style="border-radius: 30px; border-color: #e9ebee;">
+		{% csrf_token %}
+		<div class="card p-3 border-dark text-center" style="font-size: 18px; font-weight: 400;">
+			<span><i class="ri-account-box-line" id="form-section-title-i"></i>Особиста інформація</span>  
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-4">{{ form.lastname|as_crispy_field }}</div>
+			<div class="col-4">{{ form.firstname|as_crispy_field }}</div>
+			<div class="col-4">{{ form.middlename|as_crispy_field }}</div>
+		</div>
+		<div class="row">
+			<div class="col-4">{{ form.phone|as_crispy_field }}</div>
+			<div class="col-4">{{ form.email|as_crispy_field }}</div>
+			<div class="col-4">{{ form.password|as_crispy_field }}</div>
+		</div>
+		<div class="row">
+			<div class="col-3" id="register-gender-section">{{ form.gender|as_crispy_field }}</div>
+		</div>
+		<br>
+		<div class="card p-3 border-dark text-center" style="font-size: 18px; font-weight: 400;">
+			<span><i class="ri-graduation-cap-line" id="form-section-title-i"></i>Академічна інформація</span>   
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-3">{{ form.specialty_id|as_crispy_field}}</div>
+			<div class="col-3">{{ form.study_group_id|as_crispy_field}}</div>
+			<div class="col-3">{{ form.teacher_id|as_crispy_field}}</div>
+			<div class="col-3">{{ form.scientific_profile|as_crispy_field}}</div>
+		</div>
+		<div class="row">
+			<div class="col-3">{{ form.learning_source|as_crispy_field}}</div>
+		</div>
+		<hr>
+		<button type="submit" class="btn btn-dark mt-3" id="form-main-btn">Зареєструватись</button>  
+	</form>
+	
+	{% for message in messages %}
+      {% if message.tags == 'success' %}
+        <div class="text-center alert alert-success alert-dismissible fade show" role="alert" id="registerstudent-msg-register-success">{{message}}
+			<i class="ri-emotion-happy-line" id="registerstudent-icon-success"></i>
+           <a href="{% url 'phdc_app:home'%}" type="button" class="btn btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
+        </div>
+      {% endif %}
+    {% endfor %}
+</div>
+{% endblock base-content %}

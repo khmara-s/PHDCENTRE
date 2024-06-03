@@ -1,0 +1,122 @@
+{% extends 'dissertation.html' %}
+
+
+{% block base-title %} PHDCENTRE: Публікація {% endblock base-title %}
+
+{% block sp-main-btns %}
+<a href="{% url 'phdc_app:edit_publication' publication.id %}" class="btn btn-outline-secondary" id="diss-btn" style="position: relative; left: 65rem; top: 1rem;">
+	<i class="ri-file-edit-line"></i> Редагувати
+</a>
+{% endblock sp-main-btns %}
+
+{% block diss-image %}
+<img class="diss-image" src="/static/images/pub_img.png" alt="Publication Image">
+{% endblock diss-image %}
+
+{% block diss-title %}
+<h3>
+	{% if publication.is_suitable == 'Очікується перевірка' %}
+	<i class="ri-time-line" style="color: #FFB480;"></i>Публікація<br>
+	<p>{{ publication.name }}</p><br>
+	{% elif publication.is_suitable == 'Не зарахована' %}
+	<i class="ri-close-circle-line" style="color: #ff7a72;"></i>Публікація<br>
+	<p>{{ publication.name }}</p><br>
+	{% else %}
+	<i class="ri-checkbox-circle-line" style="color: #92e3a9;"></i>Публікація<br>
+	<p>{{ publication.name }}</p><br>
+	{% endif %}
+	{% endblock diss-title %}
+
+	{% block diss-download-btn %}
+	<a href="{% url 'phdc_app:authors'  publication.id%}" class="btn btn-outline-secondary" id="diss-btn">
+		<i class="ri-team-line"></i> Автори
+	</a>
+	{% endblock diss-download-btn %}
+
+	{% block diss-delete-btn %}{% endblock diss-delete-btn %}
+	
+	{% block diss-body-left %}
+	<h3 style="font-size: 2.5rem; position: relative; top: 3rem; left: 1rem;">Тип</h3>
+	<div>
+		<h4 style="font-size: 1.95rem; font-weight: 300; position: relative; top: 3rem; left: 0.5rem;">
+			<span class="diss-i"><i class="ri-shapes-line" style="color: #92e3a9;"></i></span>
+			<span class="diss-txt">{{ publication.type_id }}
+		</h4>
+	</div>
+
+	<h3 style="font-size: 2.5rem; position: relative; top: 5rem; left: 1rem;">DOI</h3>
+	<div>
+		<h4 style="font-size: 1.95rem; font-weight: 300; position: relative; top: 5rem; left: 0.5rem;">
+			<span class="diss-i"><i class="ri-links-line" style="color: #92e3a9;"></i></span>
+			<span class="diss-txt">
+				{% if publication.doi == ' ' %}
+				DOI відсутнє
+				{% else %}
+				{{ publication.doi }}
+				{% endif %}
+			</span>
+		</h4>
+	</div>
+	{% endblock diss-body-left %}
+
+	{% block diss-body-right %}
+	<h3 style="font-size: 2.5rem; position: relative; top: 1rem; left: 1rem;">Видання</h3>
+	<div>
+		<h4 style="font-size: 1.5rem; font-weight: 300; position: relative; top: 1rem; left: 0.5rem;">
+			<span class="diss-i"><i class="ri-pages-line" style="color: #92e3a9;"></i></span>
+			<span class="diss-txt">{{ publication.edition_id }}
+		</h4>
+	</div>
+
+	<ul style="position: relative; top: 3rem; left: 1rem;">
+		<li>
+			<h3 class="diss-right-h3" style="font-size: 2rem;">Том</h3>
+			<div class="diss-right-section-detail" id="section-cypher">
+				<span class="diss-i"><i class="ri-book-2-line" style="font-size: 1.3rem; color: #92e3a9;"></i></span>
+				<span class="diss-txt" style="font-size: 1.3rem; font-weight: 300;">
+					{% if publication.volume == ' ' %}
+					Том відсутній
+					{% else %}
+					{{ publication.volume }}
+					{% endif %}
+				</span>
+			</div>
+		</li>
+
+		<li>
+			<h3 class="diss-right-h3" id="diss-def-date-h3" style="font-size: 2rem;">Сторінки</h3>
+			<div class="diss-right-section-detail" id="section-def-date">
+				<span class="diss-i"><i class="ri-book-open-line" style="font-size: 1.3rem; color: #92e3a9;"></i></span>
+				<span class="diss-txt" style="font-size: 1.3rem; font-weight: 300;">
+					{% if publication.pages == ' ' %}
+					Сторінки відсутні
+					{% else %}
+					{{ publication.pages }}
+					{% endif %}
+				</span>
+			</div>
+		</li>
+
+		<li>
+			<h3 class="diss-right-h3" id="diss-def-date-h3" style="font-size: 2rem;">Рік</h3>
+			<div class="diss-right-section-detail" id="section-def-date">
+				<span class="diss-i"><i class="ri-calendar-event-line"
+						style="font-size: 1.3rem; color: #92e3a9;"></i></span>
+				<span class="diss-txt" style="font-size: 1.3rem; font-weight: 300;">
+					{% if publication.year == ' ' %}
+					Рік відсутній
+					{% else %}
+					{{ publication.year }}
+					{% endif %}
+				</span>
+			</div>
+		</li>
+	</ul>
+
+	<h3 class="diss-right-h3" id="diss-def-link-h3"
+		style="font-size: 1.9rem; position: relative; top: 3.5rem; left: 1rem;">Коефіцієнт&nbsp;зарахування</h3>
+	<div class="diss-right-section-detail" id="section-link" style="position: relative; top: 3.5rem; left: 1rem;">
+		<span class="diss-i"><i class="ri-percent-line" style="font-size: 1.5rem; color: #92e3a9;"></i></span>
+		<span class="diss-txt" style="font-size: 1.5rem; font-weight: 300;">{{ publication.coef }}</span>
+	</div>
+	{% endblock diss-body-right %}

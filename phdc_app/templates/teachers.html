@@ -1,0 +1,85 @@
+{% extends 'students.html' %}
+
+{% block base-title %} PHDCENTRE: Викладачі {% endblock base-title %}
+
+{% block homea-reset-btn %}
+<a href="{% url 'phdc_app:teachers' %}">
+    <i class="ri-restart-line"></i>
+</a>
+{% endblock homea-reset-btn %}
+
+{% block homea-search-field-input %}
+<input class="form-control" type="text" name="teachers_q" placeholder="Пошук" 
+       hx-get="{% url 'phdc_app:teacher_list' %}" 
+       hx-trigger="keyup changed delay:500ms"
+       hx-target="#teacher-list">
+{% endblock homea-search-field-input %}
+
+{% block homea-section-title %} 
+<i class="ri-glasses-line" style="font-size: 3.5rem;"></i>&nbsp;Викладачі 
+{% endblock homea-section-title %}
+
+{% block s-table-add-btn %}
+{% if group != 'phdstudents' %}
+<div class="table-add-btn" id="add-btn">
+    <button hx-get="{% url 'phdc_app:add_teacher' %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary main-btn add-btn">
+        <i class="ri-user-add-line"></i> Додати викладача
+    </button>
+</div>
+{% endif %}
+{% endblock s-table-add-btn %}
+
+{% block filters %}
+<form id="filter-form" hx-get="{% url 'phdc_app:teacher_list' %}" hx-target="#teacher-list" hx-trigger="change from:input[name='academic_status']" class="mt-5 mb-2">
+    <div class="s-table-filters">
+        <p><i class="ri-filter-line"></i>Фільтри</p>
+    </div>
+    <div class="btn-group wd-100" role="group" aria-label="Basic radio toggle button group" style="position: relative; top: -2rem; left: 2.5rem;">
+        <div class="s-table-filters-academic_status">
+            <input type="radio" class="btn-check" value="" name="academic_status" id="btnradio0" autocomplete="off" {% if not selected_academic_status %}checked{% endif %}>
+            <label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio0">Всі</label>
+
+            <input type="radio" class="btn-check" value="Асистент" name="academic_status" id="btnradio1" autocomplete="off" {% if selected_academic_status == "Асистент" %}checked{% endif %}>
+            <label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio1">Асистент</label>
+
+            <input type="radio" class="btn-check" value="Доктор філософії" name="academic_status" id="btnradio2" autocomplete="off" {% if selected_academic_status == "Доктор філософії" %}checked{% endif %}>
+            <label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio2">Доктор філософії</label>
+
+            <input type="radio" class="btn-check" value="Доктор наук" name="academic_status" id="btnradio3" autocomplete="off" {% if selected_academic_status == "Доктор наук" %}checked{% endif %}>
+            <label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio3">Доктор наук</label>
+
+            <input type="radio" class="btn-check" value="Доцент" name="academic_status" id="btnradio4" autocomplete="off" {% if selected_academic_status == "Доцент" %}checked{% endif %}>
+            <label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio4">Доцент</label>
+
+            <input type="radio" class="btn-check" value="Старший дослідник" name="academic_status" id="btnradio5" autocomplete="off" {% if selected_academic_status == "Старший дослідник" %}checked{% endif %}>
+            <label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio5">Старший дослідник</label>
+
+            <input type="radio" class="btn-check" value="Професор" name="academic_status" id="btnradio6" autocomplete="off" {% if selected_academic_status == "Професор" %}checked{% endif %}>
+            <label class="btn btn-outline-secondary s-table-filter filter-green" for="btnradio6">Професор</label>
+        </div>
+    </div>
+</form>
+{% endblock filters %}
+
+{% block s-table %}
+<table id="t-table" {% if group == 'phdstudents' %} style="position: relative; top: -3%;" {% endif %}>
+{% endblock s-table %}
+
+{% block s-table-title-col %}
+<tr>
+    <th>ПІБ</th>
+    <th>Номер телефону</th>
+    <th>Е-пошта</th>
+    <th>Академічний статус</th>
+    <th>Науковий профіль</th>
+    {% if group != 'phdstudents' %}
+    <th colspan="2">Дія</th>
+    {% endif %}
+</tr>
+{% endblock s-table-title-col %}
+
+{% block s-table-data-col %}
+<tbody id="teacher-list" hx-trigger="load, teacherUpdate from:body" hx-get="{% url 'phdc_app:teacher_list' %}" hx-target="this">
+    {% include 'teacher_list.html' %}
+</tbody>
+{% endblock s-table-data-col %}

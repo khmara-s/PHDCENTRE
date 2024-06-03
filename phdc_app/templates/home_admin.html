@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+
+{% block base-title %} PHDCENTRE: Панель керування {% endblock base-title %}
+
+{% block base-nav-bg %} homea-nav-bg {% endblock base-nav-bg %}
+{% block base-nav-content %}
+<div class="homea-navbar">
+	<i class="ri-menu-line sidebar-menu"></i>
+	<span class="phdclogo">
+		<a href="#">
+			<i class="ri-graduation-cap-line" style="color: #92e3a9; font-size: 30px;"></i>&nbsp;PHDCENTRE
+		</a>
+	</span>
+	
+	<div class="homea-nav-menu">
+		<div class="homea-nav-logo-toggle">
+			<span class="phdclogo">
+				<a href="#" id="phdclogo-siderbar">
+					<i class="ri-graduation-cap-line" style="color: #92e3a9; font-size: 30px;"></i>&nbsp;PHDCENTRE
+				</a>
+			</span>
+		</div>
+		<br class="homea-sidebar-seprtr">
+		<hr class="homea-sidebar-seprtr">
+
+		{% if group != 'phdstudents' %}
+		<ul class="homea-nav-ul">
+			<li>
+				<a href="{% url 'phdc_app:home_admin' %}" class="btn">
+					<i class="ri-tools-line" id="homea-controlp-icon"></i>&nbsp;<span id="homea-controlp-text">Панель&nbsp;керування</span> 
+				</a>
+			</li> 
+			<li>
+				<button hx-get="{% url 'phdc_app:send_email' %}" hx-target="#dialog" data-bs-backdrop="static" class="btn">
+					<i class="ri-chat-3-line" id="homea-msg-icon"></i>&nbsp;<span id="homea-msg-text">Повідомлення</span>
+				</button>
+			</li>
+			<li>
+				<a href="{% url 'phdc_app:deadlines' %}" class="btn">
+					<i class="ri-timer-line" id="homea-deadline-icon"></i>&nbsp;<span id="homea-deadline-text">Дедлайни</span> 
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'phdc_app:blacklists' %}" class="btn"> 
+					<i class="ri-user-search-line" id="homea-blacklist-icon"></i>&nbsp;<span id="homea-blacklist-text">Список&nbsp;перевірки</span> 
+				</a>
+			</li>
+			<li>
+				<button hx-get="{% url 'phdc_app:admin_settings' %}" hx-target="#dialog" data-bs-backdrop="static" class="btn">
+					<i class="ri-user-settings-line" id="homea-settings-icon"></i>&nbsp;<span id="homea-settings-text">Налаштування</span>
+				</button>
+			</li>
+		</ul>
+		{% endif %}
+
+		{% if group == 'phdstudents' %}
+		<ul class="homea-nav-ul" style="position: relative; left: -1.5rem;">
+			<li>
+				<a href="{% url 'phdc_app:student_profile_nav' %}" class="btn"> 
+					<i class="ri-user-line" id="homea-controlp-icon"></i>&nbsp;<span id="homea-controlp-text">Профіль</span> 
+				</a>
+			</li> 
+			<li>
+				<button hx-get="{% url 'phdc_app:send_email' %}" hx-target="#dialog" data-bs-backdrop="static" class="btn">
+					<i class="ri-chat-3-line" id="homea-msg-icon"></i>&nbsp;<span id="homea-msg-text">Повідомлення</span>
+				</button>
+			</li>
+			<li>
+				<a href="{% url 'phdc_app:deadlines' %}" class="btn">
+					<i class="ri-timer-line" id="homea-deadline-icon"></i>&nbsp;<span id="homea-deadline-text">Дедлайни</span> 
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'phdc_app:seminars' %}" class="btn"> 
+					<i class="ri-presentation-line" id="homea-controlp-icon"></i>&nbsp;<span id="homea-controlp-text">Семінари</span> 
+				</a>
+			</li> 
+		</ul>
+		{% endif %}
+	</div>
+
+	<div class="homea-nav-btns" {% if group == 'phdstudents' %} style="position: relative; left: 21rem;" {% else %} style="position: relative; right: 2rem;" {% endif %}>
+			{% if group != 'phdstudents' %}
+			<div class="homea-nav-notif-btn">
+				<button hx-get="{% url 'phdc_app:show_notifications' %}" style="border-color: transparent; background-color: #ffffff;" hx-target="#dialog" data-bs-backdrop="static"><i class="ri-notification-4-line"></i></button>
+			</div>
+			<div class="homea-nav-notif-btn">
+				<button hx-get="{% url 'phdc_app:registration_status_toggle' %}" style="border-color: transparent; background-color: #ffffff;" hx-target="#dialog" data-bs-backdrop="static"> <i class="ri-lock-line"></i></button>
+			</div>
+			{% endif %}
+
+			{% if group == 'phdstudents' %}
+			<div class="homea-nav-notif-btn">
+				<button hx-get="{% url 'phdc_app:show_student_notifications' %}" style="border-color: transparent; background-color: #ffffff;" hx-target="#dialog" data-bs-backdrop="static"><i class="ri-notification-4-line"></i></button>
+			</div>
+			{% endif %}
+		
+		<div class="homea-nav-search-btn">
+			<div class="homea-nav-search-toggle">
+				<i class="ri-close-line close"></i>
+			    <i class="ri-search-2-line search"></i>
+			</div>
+
+			<form class="d-flex homea-nav-search-field">
+				{% csrf_token %}
+				{% block homea-search-field-input %}
+				<input type="text" placeholder="Пошук">
+				{% endblock homea-search-field-input %}
+				<button class="btn" type="submit"><i class="ri-search-2-line"></i></button>
+			</form>
+		</div>
+		<div class="homea-nav-reset-btn">
+			{% block homea-reset-btn %}
+			<i class="ri-restart-line"></i>
+			{% endblock homea-reset-btn %}
+		</div>
+		<div class="homea-nav-logout-btn">
+			<button type="button" style="border-color: transparent; background-color: #ffffff;" data-bs-toggle="modal" data-bs-target="#logout-modal"><i class="ri-logout-circle-r-line"></i></button>
+		</div> 
+	</div>
+</div>
+{% endblock base-nav-content %}
+
+{% block base-content %}
+<div class="container-fluid" id="{% block homea-main-container %}homea-main-container{% endblock homea-main-container %}">
+	<div class="container"> 
+		<div class="homea-sections-panel">
+			<div class="homea-section">
+				<h1 class="{% block homea-title %} homea-title {% endblock homea-title %}">{% block homea-section-title %}<i class="ri-tools-line"></i>&nbsp;Панель керування {% endblock homea-section-title %}</h1>
+				<div class="{% block homea-cards-list %} homea-cards-list {% endblock homea-cards-list %}">
+					{% block homea-cards-list-content %}
+					{% if group != 'phdstudents' %}
+					<div class="homea-card">
+						<i class="ri-graduation-cap-line"></i>
+						<h2>Аспіранти</h2>
+						<p>Перегляньте список аспірантів, зареєстрованих в системі.</p>
+						<hr>
+						<a href="{% url 'phdc_app:students' %}" class="btn homea-go-btn">Перейти<i class="ri-arrow-right-double-line"></i></a>
+					</div>
+					{% endif %}
+					<div class="homea-card">
+						<i class="ri-glasses-line"></i>
+						<h2>Викладачі</h2>
+						<p>Перегляньте та налаштуйте список викладачів.</p>
+						<hr>
+						<a href="{% url 'phdc_app:teachers' %}" class="btn homea-go-btn">Перейти<i class="ri-arrow-right-double-line"></i></a>
+					</div>
+					{% if group != 'phdstudents' %}
+					<div class="homea-card">
+						<i class="ri-group-line"></i>
+						<h2>Навчальні групи</h2>
+						<p>Перегляньте список груп, в яких навчаються аспіранти.</p>
+						<hr>
+						<a href="{% url 'phdc_app:study_groups' %}" class="btn homea-go-btn">Перейти<i class="ri-arrow-right-double-line"></i></a>
+					</div>
+					{% endif %}
+					{% if group != 'phdstudents' %}
+					<div class="homea-card">
+						<i class="ri-hammer-line"></i>
+						<h2>Спеціальності</h2>
+						<p>Перегляньте та налаштуйте список спеціальностей.</p>
+						<hr>
+						<a href="{% url 'phdc_app:specialties' %}" class="btn homea-go-btn">Перейти<i class="ri-arrow-right-double-line"></i></a>
+					</div>
+					{% endif %}
+					<div class="homea-card">
+						<i class="ri-pages-line"></i>
+						<h2>Видання</h2>
+						<p>Перегляньте та налаштуйте список видань.</p>
+						<hr>
+						<a href="{% url 'phdc_app:editions' %}" class="btn homea-go-btn">Перейти<i class="ri-arrow-right-double-line"></i></a>
+					</div>
+					<div class="homea-card">
+						<i class="ri-shapes-line"></i>
+						<h2>Типи публікацій</h2>
+						<p>Перегляньте та налаштуйте типи публікацій аспірантів.</p>
+						<hr>
+						<a href="{% url 'phdc_app:pub_types' %}" class="btn homea-go-btn">Перейти<i class="ri-arrow-right-double-line"></i></a>
+					</div>
+					{% if group != 'phdstudents' %}
+					<div class="homea-card">
+						<i class="ri-school-line"></i>
+						<h2>Кафедри</h2>
+						<p>Перегляньте та налаштуйте список кафедр факультету.</p>
+						<hr>
+						<a href="{% url 'phdc_app:departments' %}" class="btn homea-go-btn">Перейти<i class="ri-arrow-right-double-line"></i></a>
+					</div>
+					{% endif %}
+					<div class="homea-card">
+						<i class="ri-presentation-line"></i>
+						<h2>Семінари</h2>
+						<p>Перегляньте та налаштуйте актуальні семінари кафедр, а також їх учасників.</p>
+						<hr>
+						<a href="{% url 'phdc_app:seminars' %}" class="btn homea-go-btn">Перейти<i class="ri-arrow-right-double-line"></i></a>
+					</div>
+				</div>
+				{% endblock homea-cards-list-content %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock base-content %}

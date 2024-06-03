@@ -1,0 +1,31 @@
+{% for data in research_plans %}
+<tr>
+    <td>{{ data.year }}</td>
+    <td>{{ data.semester }}</td>
+    <td>{{ data.date_sem_start }}</td>
+    <td>{{ data.date_sem_end }}</td>
+    <td>{{ data.location }}</td>
+    <td class="s-table-btns">
+        <button hx-get="{% url 'phdc_app:show_research_plan' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-btn">
+            <i class="ri-eye-line"></i>
+        </button>
+    </td>
+    <td class="s-table-btns">
+        <button hx-get="{% url 'phdc_app:impl_research_plan' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-btn">
+            <i class="ri-eye-line"></i>
+        </button>
+    </td>
+    <td class="s-table-btns">
+        <button hx-get="{% url 'phdc_app:edit_research_plan' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-btn">
+            <i class="ri-file-edit-line"></i>
+        </button>
+        <button hx-get="{% url 'phdc_app:delete_research_plan' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-delete-btn">
+            <i class="ri-delete-bin-line"></i>
+        </button>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="8" class="s-table-empty-rcrd"><strong>Зараз тут порожньо</strong></td>
+</tr>
+{% endfor %}

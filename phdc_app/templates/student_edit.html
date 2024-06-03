@@ -1,0 +1,119 @@
+{% extends 'dissertation.html' %}
+{% load crispy_forms_tags %}
+
+{% block homea-cards-list-content %}
+<div class="container mt-3" style="width: 95%; font-size: 14px; position: relative; top: 0.5rem;">
+    <form method="POST" class="card p-3 mt-5" autocomplete="off" novalidate style="border-radius: 30px; border-color: #e9ebee;">
+        {% csrf_token %}
+        <div class="card p-3 border-dark text-center" style="font-size: 18px; font-weight: 400;"> 
+            <span><i class="ri-pencil-line" id="form-section-title-i" style="color: #92e3a9;"></i>Редагування аспіранта</span>  
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                {% if group == 'moderators' %}
+                    <input type="text" value="{{ form.lastname.value }}" class="form-control" readonly>
+                    <input type="hidden" name="lastname" value="{{ form.lastname.value }}">
+                {% else %}
+                    {{ form.lastname|as_crispy_field }}
+                {% endif %}
+            </div>
+            <div class="col-4">
+                {% if group == 'moderators' %}
+                    <input type="text" value="{{ form.firstname.value }}" class="form-control" readonly>
+                    <input type="hidden" name="firstname" value="{{ form.firstname.value }}">
+                {% else %}
+                    {{ form.firstname|as_crispy_field }}
+                {% endif %}
+            </div>
+            <div class="col-4">
+                {% if group == 'moderators' %}
+                    <input type="text" value="{{ form.middlename.value }}" class="form-control" readonly>
+                    <input type="hidden" name="middlename" value="{{ form.middlename.value }}">
+                {% else %}
+                    {{ form.middlename|as_crispy_field }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                {% if group == 'moderators' %}
+                    <input type="text" value="{{ form.phone.value }}" class="form-control" readonly>
+                    <input type="hidden" name="phone" value="{{ form.phone.value }}">
+                {% else %}
+                    {{ form.phone|as_crispy_field }}
+                {% endif %}
+            </div>
+            <div class="col-4">
+                {% if group == 'moderators' %}
+                    <input type="email" value="{{ form.email.value }}" class="form-control" readonly>
+                    <input type="hidden" name="email" value="{{ form.email.value }}">
+                {% else %}
+                    {{ form.email|as_crispy_field }}
+                {% endif %}
+            </div>
+            <div class="col-4">
+                {% if group == 'moderators' %}
+                    <input type="password" value="{{ form.password.value }}" class="form-control" readonly>
+                    <input type="hidden" name="password" value="{{ form.password.value }}">
+                {% else %}
+                    {{ form.password|as_crispy_field }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3" id="register-gender-section">
+                {% if group == 'moderators' %}
+                    <input type="text" value="{{ form.gender.value }}" class="form-control" readonly>
+                    <input type="hidden" name="gender" value="{{ form.gender.value }}">
+                {% else %}
+                    {{ form.gender|as_crispy_field }}
+                {% endif %}
+            </div>
+            <div class="col-3">{{ form.learning_source|as_crispy_field}}</div>
+            <div class="col-3">
+                {% if group == 'phdstudents' %}
+                    <input type="text" value="{{ form.is_graduate.value }}" class="form-control" readonly>
+                    <input type="hidden" name="is_graduate" value="{{ form.is_graduate.value }}">
+                {% else %}
+                    {{ form.is_graduate|as_crispy_field }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">{{ form.specialty_id|as_crispy_field}}</div>
+            <div class="col-3">{{ form.study_group_id|as_crispy_field}}</div>
+            <div class="col-3">{{ form.teacher_id|as_crispy_field}}</div>
+            <div class="col-3">{{ form.scientific_profile|as_crispy_field}}</div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                {% if group == 'phdstudents' %}
+                    <input type="text" value="{{ form.status.value }}" class="form-control" readonly>
+                    <input type="hidden" name="status" value="{{ form.status.value }}">
+                {% else %}
+                    {{ form.status|as_crispy_field }}
+                {% endif %}
+            </div>
+            <div class="col-4">
+                {% if group == 'phdstudents' %}
+                    <input type="text" value="{{ form.is_defended.value }}" class="form-control" readonly>
+                    <input type="hidden" name="is_defended" value="{{ form.is_defended.value }}">
+                {% else %}
+                    {{ form.is_defended|as_crispy_field }}
+                {% endif %}
+            </div>
+            <div class="col-4">
+                {% if group == 'phdstudents' %}
+                    <input type="text" value="{{ form.is_approved.value }}" class="form-control" readonly>
+                    <input type="hidden" name="is_approved" value="{{ form.is_approved.value }}">
+                {% else %}
+                    {{ form.is_approved|as_crispy_field }}
+                {% endif %}
+            </div>
+        </div>
+        <hr>
+        <button type="submit" class="btn btn-dark mt-3" id="form-main-btn">Зберегти</button>  
+    </form>
+</div>
+{% endblock homea-cards-list-content %}

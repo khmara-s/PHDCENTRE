@@ -1,0 +1,22 @@
+{% load crispy_forms_tags %}
+
+
+<form hx-post="{{ request.path }}" class="modal-content">
+	{% csrf_token %}
+	<div class="modal-header"> 
+	  <h5 class="modal-title"><i class="ri-pencil-line" style="color: #92e3a9;"></i> Редагування групи</h5>
+	</div>
+	<div class="modal-body">
+		{% csrf_token %}
+		{{ form.name|as_crispy_field }}
+		{{ form.department_id|as_crispy_field }}
+		{{ form.study_type|as_crispy_field }}
+		{{ form.course|as_crispy_field }}
+		{{ form.date_educ_start|as_crispy_field }}
+		{{ form.date_educ_end|as_crispy_field }}
+	</div>
+	<div class="modal-footer">
+		<button type="submit" id="modal-save-btn">Зберегти</button>
+		<button type="button" data-bs-dismiss="modal" id="modal-close-btn">Закрити</button>
+	</div>
+</form>

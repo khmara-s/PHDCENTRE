@@ -1,0 +1,24 @@
+{% for data in editions %}
+<tr>
+	<td>{{ data.name }} </td>
+	<td>{{ data.issn_electronic }}</td>
+	<td>{{ data.issn_printed }}</td>
+	<td>{{ data.isbn_electronic }}</td>
+	<td>{{ data.isbn_printed }}</td>
+	<td class="s-table-btns">
+		<a href="{% url 'phdc_app:edition_specs' data.id %}" class="btn btn-outline-secondary btn-sm text-light" id="table-btn">
+			<i class="ri-eye-line"></i>
+		</a>
+	</td>
+	<td class="s-table-btns">
+		<button hx-get="{% url 'phdc_app:edit_edition' data.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-btn">
+			<i class="ri-file-edit-line"></i>
+		</button>
+		<button hx-get="{% url 'phdc_app:delete_edition' id=data.id %}" hx-target="#dialog" data-bs-backdrop="static" class="btn btn-outline-secondary btn-sm text-light" id="table-delete-btn">
+			<i class="ri-delete-bin-line"></i>
+		</button>
+	</td>
+	{% empty %}
+	<td colspan="6" class="s-table-empty-rcrd"><strong>Записи відсутні</strong></td>
+</tr>
+{% endfor %}

@@ -1,0 +1,16 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="ri-file-copy-2-line" style="color: #92e3a9;"></i> Деталі завдання</h5>
+      </div>
+      <div class="modal-body">
+        <p>Студенту: {% if deadline.student_id is None %} - {% else %} {{ deadline.student_id }} {% endif %}</p>
+        <p>Групі: {% if deadline.group_id is None %} - {% else %} {{ deadline.group_id }} {% endif %}</p>
+        <p>Дедлайн завдання: {{ deadline.date }}</p>
+        <p>Опис завдання: {{ deadline.description }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-close-btn">Закрити</button>
+      </div>
+    </div>
+  </div>

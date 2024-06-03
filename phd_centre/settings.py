@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
-
+import dj_database_url
 import environ
 
 
@@ -33,11 +34,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SESSION_COOKIE_AGE = 1800  
+SESSION_SAVE_EVERY_REQUEST = True
 
 # Application definition
 
 INSTALLED_APPS = [
 	'phdc_app',
+	'crispy_forms',
+    'crispy_bootstrap5',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -47,8 +52,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -81,18 +91,25 @@ WSGI_APPLICATION = 'phd_centre.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', #'django.db.backends.sqlite3'
-        'NAME': env("DB_NAME"), #BASE_DIR / 'db.sqlite3'
-		'USER': env("DB_USER"),
-		'PASSWORD': env("DB_PASSWORD"),
-		'HOST': env("DB_HOST"),
-		'PORT': env("DB_PORT"),
-    }
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgresql://phdcadmin:adminphdpass01c@localhost:5432/phdcentredb',
+        conn_max_age=600
+    )
 }
 
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2', #'django.db.backends.sqlite3'
+#         'NAME': env("DB_NAME"), #BASE_DIR / 'db.sqlite3'
+# 		'USER': env("DB_USER"),
+# 		'PASSWORD': env("DB_PASSWORD"),
+# 		'HOST': env("DB_HOST"),
+# 		'PORT': env("DB_PORT"),
+#     }
+# }
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -123,13 +140,26 @@ USE_I18N = True
 
 USE_TZ = True
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ms6967476@gmail.com'
+EMAIL_HOST_PASSWORD = 'sxnhsknfhktvyuoz'
+EMAIL_USE_TLS = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Login/Logout
+# LOGIN_REDIRECT_URL = 'home_admin'
+# LOGOUT_REDIRECT_URL = 'phdc_app:home'
