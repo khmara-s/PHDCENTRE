@@ -6,7 +6,7 @@
 
 {% block homea-cards-list-content %}
 <div class="container mt-3" style="width: 95%; font-size: 14px; position: relative; top: -30px;">
-    <form method="POST" enctype="multipart/form-data" class="card p-3 mt-5" autocomplete="off" novalidate id="diss-creation-form" style="border-radius: 30px; border-color: #e9ebee;">  <!-- Add enctype attribute -->
+    <form method="POST" enctype="multipart/form-data" class="card p-3 mt-5" autocomplete="off" novalidate id="diss-creation-form" style="border-radius: 30px; border-color: #e9ebee;">  
         {% csrf_token %}
         <div class="card p-3 border-dark text-center" style="font-size: 18px; font-weight: 400;">
             {% block diss-add-title %}

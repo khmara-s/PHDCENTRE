@@ -69,7 +69,7 @@ def register(request):
 			user.groups.add(user_group)
 			form.save()
 			messages.success(request, "Успішна реєстрація!")
-			return HttpResponseRedirect('/') #return HttpResponseRedirect('/register_student/') 
+			return HttpResponseRedirect('/') 
 		else:
 			return render(request, "register.html", {'form':form})
 	else:
@@ -444,7 +444,6 @@ def add_student_to_bl(request, id):
 	if request.method == "POST":
 		form = StudentBLForm(request.POST)
 		if form.is_valid():
-			# form.save()
 			bl_entry = form.save(commit=False)
 			bl_entry.student_id = student
 			bl_entry.date = timezone.now()
@@ -524,11 +523,6 @@ def research_plan_list(request, id):
     
     return render(request, 'research_plan_list.html', {'research_plans': research_plans, 'id': id})
 
-
-
-
-
-
 @login_required(login_url="phdc_app:login_page")
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def add_research_plan(request, id):
@@ -595,10 +589,10 @@ def show_research_plan(request, id):
 def impl_research_plan(request, id):
 	research_plan = ResearchIndPlan.objects.get(pk = id)
 	return  render(request, 'research_plan_impl_modal.html', {'research_plan': research_plan, 'id': id})
+
 # --------------------
 # НАВЧАЛЬНИЙ ПЛАН
 # ------------------- 
-
 @login_required(login_url="phdc_app:login_page")
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def educ_plans(request, id):
@@ -973,21 +967,6 @@ def delete_protocol(request, id):
 	else:
 		return  render(request, 'protocol_delete_modal.html', {'protocol': protocol, 'id': id})
 	
-def download_file_prot(request, id):
-    protocol = get_object_or_404(Protocol, id=id)
-    
-    if not protocol.file:
-        raise Http404
-    
-    file_path = protocol.file.path
-    file_name = protocol.file.name.split('/')[-1]
-    mime_type, _ = mimetypes.guess_type(file_path)
-    
-    with open(file_path, 'rb') as f:
-        response = HttpResponse(f.read(), content_type=mime_type or "application/octet-stream")
-        response['Content-Disposition'] = f'attachment; filename="{file_name}"'
-        return response
-
 # --------------------
 # ВИДАННЯ
 # ------------------- 
@@ -1249,21 +1228,6 @@ def delete_pub_type(request, id):
 	else:
 		return  render(request, 'pub_type_delete_modal.html', {'pub_type': pub_type, 'id': id})
 
-
-
-# --------------------
-# ПУБЛІКАЦІЇ 
-# -------------------
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.cache import cache_control
-from .models import PostgraduateStudent, PublicationTypes, Authors, Publication
-
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.cache import cache_control
-from .models import PostgraduateStudent, ResearchIndPlan
-
 @login_required(login_url="phdc_app:login_page")
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def research_plans(request, id):
@@ -1295,9 +1259,9 @@ def research_plan_list(request, id):
         'selected_rplocation': rplocation
     })
 
-
-
-
+# --------------------
+# ПУБЛІКАЦІЇ 
+# -------------------
 @login_required(login_url="phdc_app:login_page")
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def publications(request, id):
@@ -1338,7 +1302,6 @@ def publication_list(request, id):
     page = request.GET.get('page')
     publications = publications_paginator.get_page(page)
     return render(request, 'publication_list.html', {'publications': publications, 'student_id': id})
-
 
 @login_required(login_url="phdc_app:login_page")
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -1817,8 +1780,6 @@ def registration_status_toggle(request):
 
 
 # ---------------
-
-
 # СЕМІНАРИ
 # -------------------
 @login_required(login_url="phdc_app:login_page")
@@ -1995,7 +1956,7 @@ def delete_seminar_sub(request, id):
         info = 'Ви ще не зареєстровані на цей семінар!'
         return render(request, 'seminar_unsubscriber_conf_modal.html', {'info':info})
 
-# -----------сповіщень===тткли натк чп---------
+# -------------------
 # ПОВІДОМЛЕННЯ
 # -------------------
 def send_email(request):
